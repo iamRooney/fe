@@ -1,4 +1,8 @@
-import { MessageCircle } from 'lucide-react';
+import { SlSocialLinkedin } from "react-icons/sl";
+import { SlSocialInstagram } from "react-icons/sl";
+import { TiSocialTwitter } from "react-icons/ti";
+import { IoShareSocial } from "react-icons/io5";
+
 
 export const companyLinks = [
     "About Us",
@@ -26,19 +30,19 @@ export const helpLinks = [
 
 export const socials = [
     {
-        icon: MessageCircle,
+        icon: SlSocialLinkedin,
         href: "#",
     },
     {
-        icon: MessageCircle,
+        icon: SlSocialInstagram,
         href: "#",
     },
     {
-        icon: MessageCircle,
+        icon: TiSocialTwitter,
         href: "#",
     },
     {
-        icon: MessageCircle,
+        icon: IoShareSocial,
         href: "#",
     },
 ];

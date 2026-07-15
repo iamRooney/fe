@@ -39,13 +39,13 @@ export default function CategoryNavbar() {
 
                     </div>
 
-                    <button className="flex items-center gap-2 hover:text-orange-400 transition">
+                    {/* <button className="flex items-center gap-2 hover:text-orange-400 transition">
 
                         All Categories
 
                         <Grid2X2 size={18} />
 
-                    </button>
+                    </button> */}
 
                 </div>
 

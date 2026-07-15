@@ -5,27 +5,29 @@ import { MapPin, Search, ChevronDown } from "lucide-react";
 
 export default function Header() {
     return (
-        <header className="bg-white border-b">
+        <header className="bg-white border-b border-gray-200">
             <Container>
+                <div className="flex h-[88px] items-center justify-between gap-8">
 
-                <div className="flex items-center justify-between py-5 gap-6">
-
-                    <Link href="/" className="shrink-0 ">
-
+                    {/* Logo */}
+                    <Link href="/" className="shrink-0">
                         <Image
                             src="/logos/Logo.png"
                             alt="Exbhex"
-                            width={150}
-                            height={50}
+                            width={145}
+                            height={42}
+                            priority
                         />
-
                     </Link>
 
+                    {/* Search Bar */}
                     <div className="flex flex-1 items-center">
 
-                        <div className="flex w-full rounded-xl border border-gray-200 overflow-hidden">
+                        <div className="flex h-[48px] w-full overflow-hidden rounded-xl border border-gray-300 bg-white">
 
-                            <button className="flex items-center gap-2 w-34 border-r text-sm text-gray-700">
+                            {/* Products */}
+
+                            <button className="flex w-[130px] items-center justify-center gap-2 border-r border-gray-300 text-[15px] font-medium text-gray-700 hover:bg-gray-50">
 
                                 Products
 
@@ -33,21 +35,27 @@ export default function Header() {
 
                             </button>
 
-                            <button className="flex items-center gap-2 w-36 border-r text-sm text-gray-700">
+                            {/* Location */}
 
-                                <MapPin size={16} />
+                            <button className="flex w-[150px] items-center justify-center gap-2 border-r border-gray-300 text-[15px] font-medium text-gray-700 hover:bg-gray-50">
+
+                                <MapPin size={17} />
 
                                 Location
 
                             </button>
 
+                            {/* Search */}
+
                             <input
                                 type="text"
                                 placeholder="Search for Products, Services or Companies..."
-                                className="w-full flex-1 px-5 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none"
+                                className="flex-1 px-6 text-[15px] placeholder:text-gray-400 focus:outline-none"
                             />
 
-                            <button className="bg-[#F79A1E] hover:bg-orange-400 text-white px-10 flex items-center gap-2 transition shrink-0">
+                            {/* Search Button */}
+
+                            <button className="flex w-[170px] items-center justify-center gap-2 bg-[#F89A1C] font-medium text-white transition hover:bg-[#e88910]">
 
                                 <Search size={18} />
 
@@ -59,14 +67,15 @@ export default function Header() {
 
                     </div>
 
-                    <button className="bg-[#0B2C6B] text-white rounded-2xl px-6 py-3 font-medium hover:bg-[#07204E] transition">
+                    {/* Get Best Price */}
+
+                    <button className="flex h-[48px] w-[190px] items-center justify-center rounded-2xl bg-[#163A7A] text-[16px] font-semibold text-white transition hover:bg-[#0F2F67]">
 
                         Get Best Price
 
                     </button>
 
                 </div>
-
             </Container>
         </header>
     );
