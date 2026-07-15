@@ -1,4 +1,6 @@
 import Container from "@/components/ui/Container";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/home/Footer/Footer";
 import {
     ProductBreadcrumb,
     ProductGallery,
@@ -11,9 +13,12 @@ import {
 
 export default function ProductDetailsPage() {
     return (
-        <main className="py-6">
+        <>
+            <Header />
+        <main className="bg-[#F5F7FA] min-h-screen py-6">
+            
             <Container>
-                <ProductBreadcrumb />
+                <ProductBreadcrumb product={{ name: "Sample Product" }} />
 
                 <div className="mt-6 grid grid-cols-12 gap-6">
                     {/* Left */}
@@ -36,5 +41,7 @@ export default function ProductDetailsPage() {
                 </div>
             </Container>
         </main>
+        <Footer />
+        </>
     );
 }
