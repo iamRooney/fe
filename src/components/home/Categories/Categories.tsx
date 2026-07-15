@@ -13,31 +13,20 @@ export default function Categories() {
 
                     <div>
 
-                        <p className="text-sm text-gray-600">
-                            Explore Popular Categories
-                        </p>
-
                         <p className="mt-2 text-gray-500">
                             Sourcing made easy across diverse industrial sectors.
                         </p>
 
+                        <p className="text-3xl font-bold text-gray-500">
+                            Explore Popular Categories
+                        </p>
+
+
+
                     </div>
 
-                    <button
-                        className="
-            flex
-            items-center
-            gap-2
-            text-[#18B5F7]
-            text-sm
-            hover:gap-3
-            transition-all
-            "
-                    >
-                        View All
-
-                        <ArrowRight size={16} />
-
+                    <button className="rounded-full border px-5 py-2 hover:bg-gray-100 text-gray-500">
+                        View All →
                     </button>
 
                 </div>

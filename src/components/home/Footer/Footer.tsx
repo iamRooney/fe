@@ -24,7 +24,7 @@ export default function Footer() {
                         width={180}
                         height={50}
                         alt="Exbhex"
-                     
+                        className="rounded-[20px]"
                     />
 
                     <p className="mt-6 max-w-md leading-8 text-gray-300">
