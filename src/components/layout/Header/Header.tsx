@@ -50,7 +50,7 @@ export default function Header() {
                             <input
                                 type="text"
                                 placeholder="Search for Products, Services or Companies..."
-                                className="flex-1 px-6 text-[15px] placeholder:text-gray-400 focus:outline-none"
+                                className="flex-1 px-6 text-[15px] placeholder:text-gray-400 focus:outline-none text-gray-500"
                             />
 
                             {/* Search Button */}

@@ -4,25 +4,59 @@ import Container from "@/components/ui/Container";
 
 import Breadcrumb from "@/components/category/layout/Breadcrumb";
 import CityBar from "@/components/category/layout/CityBar";
-import CategoryHeader from "@/components/category/layout/CategoryHeader";
+
+import FilterSidebar from "@/components/category/sidebar/filtersidebar";
+
+import ProductGrid from "@/components/category/products/ProductGrid";
+
+import RFQSection from "@/components/category/rfq/RFQSection";
+import BenefitsCard from "@/components/category/rfq/BenefitsCard";
+
+import FeedbackSection from "@/components/category/feedback/FeedbackSection";
+
+import RecentlyViewed from "@/components/category/recently-viewed/RecentlyViewed";
 
 export default function CategoryPage() {
     return (
         <>
             <Header />
 
-            <main className="min-h-screen bg-[#F5F7FA] py-6">
+            <main className="bg-[#F5F7FA] min-h-screen py-6">
                 <Container>
+
+                    {/* Breadcrumb */}
                     <Breadcrumb />
 
+                    {/* Nearby Cities */}
                     <CityBar />
 
-                    <CategoryHeader />
+                    {/* Main Content */}
+                    <div className="mt-6 flex gap-6 items-start">
 
-                    {/* Phase 2 starts here */}
-                    <div className="mt-6 rounded-xl border-2 border-dashed border-gray-300 bg-white p-16 text-center text-gray-400">
-                        Sidebar + Products will be built in Phase 2
+                        {/* Left Sidebar */}
+                        <FilterSidebar />
+
+                        {/* Right Content */}
+                        <div className="flex-1 space-y-6">
+
+                            <ProductGrid />
+
+                            <div className="grid grid-cols-3 gap-6">
+                                <div className="col-span-2">
+                                    <RFQSection />
+                                </div>
+
+                                <BenefitsCard />
+                            </div>
+
+                            <FeedbackSection />
+
+                            <RecentlyViewed />
+
+                        </div>
+
                     </div>
+
                 </Container>
             </main>
 
