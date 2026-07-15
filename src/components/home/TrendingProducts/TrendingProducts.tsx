@@ -1,31 +1,27 @@
-import Container from "@/components/ui/Container";
-import SectionHeading from "@/components/common/SectionHeading";
-import ProductCard from "@/cards/ProductCard/";
-import { products } from "@/data/products";
+import ProductSlider from "./ProductSlider";
 
 export default function TrendingProducts() {
     return (
-        <section className="bg-white py-24">
+        <section className="bg-gray-50 py-20">
+            <div className="mx-auto max-w-7xl px-6">
+                <div className="mb-8 flex items-center justify-between">
+                    <div>
+                        <p className="text-sm text-gray-500">
+                            Discover our latest industrial products
+                        </p>
 
-            <Container>
+                        <h2 className="text-3xl font-bold text-gray-500">
+                            Trending Products
+                        </h2>
+                    </div>
 
-                <SectionHeading
-                    subtitle="Featured"
-                    title="Trending Products"
-                />
-
-                <div className="mt-8 flex gap-5 overflow-x-auto pb-2">
-
-                    {products.map((product) => (
-                        <ProductCard
-                            key={product.id}
-                            {...product}
-                        />
-                    ))}
+                    <button className="rounded-full border px-5 py-2 text-gray-500 hover:bg-gray-100">
+                        View All →
+                    </button>
                 </div>
 
-            </Container>
-
+                <ProductSlider />
+            </div>
         </section>
     );
 }

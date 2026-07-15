@@ -1,0 +1,52 @@
+import { Product } from "./types";
+
+export const products: Product[] = [
+    {
+        id: 1,
+        name: "Silent Diesel Generator",
+        image: "/images/products/product-1.jfif",
+        supplier: "ABC Engineering",
+        price: "$4,500 - $6,200",
+        moq: "Min Order: 1 Unit",
+        verified: true,
+        badge: "HOT DEAL",
+    },
+    {
+        id: 2,
+        name: "High Precision CNC Lathe",
+        image: "/images/products/product-2.jfif",
+        supplier: "Industrial Machines",
+        price: "$12,000 - $18,000",
+        moq: "Min Order: 1 Unit",
+        verified: true,
+    },
+    {
+        id: 3,
+        name: "Monocrystalline Solar Panel",
+        image: "/images/products/product-3.jfif",
+        supplier: "Green Energy",
+        price: "$85 - $110",
+        moq: "Min Order: 50 Pieces",
+        verified: true,
+        badge: "TRENDING",
+    },
+    {
+        id: 4,
+        name: "Reverse Osmosis Plant",
+        image: "/images/products/product-4.jfif",
+        supplier: "WaterTech",
+        price: "$2,500 - $3,800",
+        moq: "Min Order: 2 Units",
+        verified: true,
+    },
+    {
+        id: 5,
+        name: "Crying Emojiiii",
+        image: "/images/products/product-55.jfif",
+        supplier: "Pinterest.in",
+        price: "$2,500 - $3,800",
+        moq: "Min Order: 100 Units",
+        verified: true,
+        badge: "INSTA TREND",
+    },
+];

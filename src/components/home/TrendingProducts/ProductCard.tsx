@@ -1,0 +1,52 @@
+import Image from "next/image";
+import { Product } from "./types";
+import { BadgeCheck } from "lucide-react";
+
+interface Props {
+    product: Product;
+}
+
+export default function ProductCard({ product }: Props) {
+    return (
+        <div className="group overflow-hidden rounded-xl border bg-white transition hover:-translate-y-1 hover:shadow-xl">
+            <div className="relative h-44 overflow-hidden">
+                <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition duration-300 group-hover:scale-105"
+                />
+
+                {product.badge && (
+                    <span className="absolute left-3 top-3 rounded bg-green-500 px-2 py-1 text-xs font-semibold text-white">
+                        {product.badge}
+                    </span>
+                )}
+            </div>
+
+            <div className="space-y-3 p-4">
+                <h3 className="line-clamp-2 text-sm font-semibold text-gray-500">
+                    {product.name}
+                </h3>
+
+                <p className="text-sm text-gray-500">{product.supplier}</p>
+
+                <div>
+                    <div className="font-bold text-orange-500">{product.price}</div>
+                    <div className="text-xs text-gray-500">{product.moq}</div>
+                </div>
+
+                {product.verified && (
+                    <div className="flex items-center gap-1 text-xs text-green-600">
+                        <BadgeCheck size={16} />
+                        Verified Supplier
+                    </div>
+                )}
+
+                <button className="w-full rounded-lg border border-green-500 py-2 text-sm font-semibold text-green-600 transition hover:bg-green-500 hover:text-white">
+                    Get Quotes
+                </button>
+            </div>
+        </div>
+    );
+}
