@@ -18,13 +18,13 @@ export default function TopBar() {
                             English
                         </button>
 
-                        <Link
+                        {/* <Link
                             href="/help"
                             className="flex items-center gap-2 hover:text-orange-400 transition"
                         >
                             <CircleHelp size={16} />
                             Help Center
-                        </Link>
+                        </Link> */}
 
                         <Link
                             href="/messages"

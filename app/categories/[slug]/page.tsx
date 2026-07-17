@@ -1,5 +1,4 @@
 import Header from "@/components/layout/Header";
-import Footer from "@/components/home/Footer/Footer";
 import Container from "@/components/ui/Container";
 
 import Breadcrumb from "@/components/category/layout/Breadcrumb";
@@ -59,8 +58,6 @@ export default function CategoryPage() {
 
                 </Container>
             </main>
-
-            <Footer />
         </>
     );
 }

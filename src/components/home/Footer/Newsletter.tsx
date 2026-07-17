@@ -14,11 +14,10 @@ export default function Newsletter() {
                     placeholder="Email Address"
                     className="flex-1 px-4 py-3 text-black outline-none"
                 />
-
-                <button className="bg-orange-500 px-6 font-semibold text-white hover:bg-orange-600">
-                    Subscribe
-                </button>
             </div>
+            <button className="rounded-lg bg-orange-500 font-semibold text-white hover:bg-orange-600 flex-1 px-4 py-3 flex overflow-hidden mt-2 ml-23">
+                Subscribe
+            </button>
         </div>
     );
 }

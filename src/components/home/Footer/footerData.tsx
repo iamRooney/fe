@@ -6,22 +6,22 @@ import { IoShareSocial } from "react-icons/io5";
 
 export const companyLinks = [
     "About Us",
-    "Careers",
-    "Press & Media",
+    // "Careers",
+    // "Press & Media",
     "Contact Us",
-    "Sustainability",
+    // "Sustainability",
+    "Terms & Conditions",
+    "Privacy Policy",
 ];
 
 export const policies = [
-    "Terms & Conditions",
-    "Seller Policies",
     "Buyer Policies",
-    "Privacy Policy",
+    "Seller Policies",
     "Refund Policy",
 ];
 
 export const helpLinks = [
-    "Help Center",
+    // "Help Center",
     "Trade Assurance",
     "Report Abuse",
     "FAQ",
