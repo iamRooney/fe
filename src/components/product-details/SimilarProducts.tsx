@@ -40,7 +40,7 @@ export default function SimilarProducts() {
 
         <Link
           href="/products"
-          className="text-blue-600 font-medium hover:underline"
+          className="text-gray-500 font-medium hover:underline"
         >
           View All →
         </Link>

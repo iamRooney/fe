@@ -21,11 +21,10 @@ export default function ProductGallery() {
             <button
               key={image}
               onClick={() => setSelectedImage(image)}
-              className={`overflow-hidden rounded-lg border-2 transition ${
-                selectedImage === image
-                  ? "border-sky-500"
-                  : "border-gray-200"
-              }`}
+              className={`overflow-hidden rounded-lg border-2 transition ${selectedImage === image
+                ? "border-sky-500"
+                : "border-gray-200"
+                }`}
             >
               <Image
                 src={image}
@@ -40,7 +39,7 @@ export default function ProductGallery() {
 
         {/* Main Image */}
         <div className="relative flex-1 rounded-xl border bg-gray-50 p-6">
-          <span className="absolute right-4 top-4 rounded-full bg-green-500 px-3 py-1 text-xs font-medium text-white">
+          <span className="absolute right-4 top-4 rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
             In Stock
           </span>
 

@@ -1,6 +1,6 @@
 export default function InquiryForm() {
   return (
-    <div className="rounded-xl border-2 border-sky-400 bg-white p-6">
+    <div className="rounded-xl border-2  bg-white p-6">
       <h2 className="text-2xl font-semibold text-gray-500">
         Send Inquiry to Supplier
       </h2>
@@ -9,14 +9,14 @@ export default function InquiryForm() {
         {/* Quantity */}
         <div>
           <label className="mb-2 block text-sm font-medium text-gray-500">
-            Quantity Required 
+            Quantity Required
           </label>
 
           <div className="flex items-center text-gray-500">
             <input
               type="number"
               defaultValue={1}
-              className="w-full rounded-l-lg border px-4 py-3 outline-none focus:border-sky-500"
+              className="w-full rounded-l-lg border px-4 py-3 outline-none focus:text-blue-700"
             />
 
             <span className="rounded-r-lg border border-l-0 bg-gray-50 px-4 py-3 ">
@@ -33,7 +33,7 @@ export default function InquiryForm() {
 
           <textarea
             rows={4}
-            className="w-full rounded-lg border p-4 outline-none focus:border-sky-500 text-gray-500"
+            className="w-full rounded-lg border p-4 outline-none focus:text-blue-700 text-gray-500"
             placeholder="I am interested in this product. Please share the best quotation..."
           />
         </div>
@@ -47,7 +47,7 @@ export default function InquiryForm() {
           <input
             type="text"
             placeholder="Your Name"
-            className="w-full rounded-lg border px-4 py-3 outline-none focus:border-sky-500 text-gray-500"
+            className="w-full rounded-lg border px-4 py-3 outline-none focus:text-blue-700 text-gray-500"
           />
         </div>
 
@@ -60,7 +60,7 @@ export default function InquiryForm() {
           <input
             type="text"
             placeholder="City"
-            className="w-full rounded-lg border px-4 py-3 outline-none focus:border-sky-500 text-gray-500"
+            className="w-full rounded-lg border px-4 py-3 outline-none focus:text-blue-700 text-gray-500"
           />
         </div>
 
@@ -73,7 +73,7 @@ export default function InquiryForm() {
           <input
             type="number"
             placeholder="+91 XXXXX XXXXX"
-            className="w-full rounded-lg border px-4 py-3 outline-none focus:border-sky-500 text-gray-500"
+            className="w-full rounded-lg border px-4 py-3 outline-none focus:text-blue-700 text-gray-500"
           />
         </div>
 
@@ -86,7 +86,7 @@ export default function InquiryForm() {
           <input
             type="email"
             placeholder="example@email.com"
-            className="w-full rounded-lg border px-4 py-3 outline-none focus:border-sky-500 text-gray-500"
+            className="w-full rounded-lg border px-4 py-3 outline-none focus:text-blue-700 text-gray-500"
           />
         </div>
 
