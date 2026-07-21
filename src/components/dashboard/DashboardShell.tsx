@@ -7,6 +7,10 @@ import { useAuth } from "@/hooks/useAuth";
 import DashboardOverview from "./DashboardOverview";
 import MessagesPage from "../messages/MessagePage";
 import PlaceholderSection from "./PlaceholderSection";
+import MyEnquiries from "./buyer/Enquiries";
+import PostRFQ from "./buyer/PostRFQ";
+import SavedSuppliers from "./buyer/saved";
+import RecentlyViewed from "./buyer/Recently";
 
 export default function DashboardShell() {
     const router = useRouter();
@@ -31,7 +35,11 @@ export default function DashboardShell() {
 
     function renderSection() {
         if (activeSection === "overview") return <DashboardOverview role={role} />;
-        if (activeSection === "messages") return <MessagesPage  />;
+        if (activeSection === "messages") return <MessagesPage />;
+        if (activeSection === "enquiries") return <MyEnquiries />;
+        if (activeSection === "post-rfq") return <PostRFQ />;
+        if (activeSection === "saved") return <SavedSuppliers />;
+        if (activeSection === "recent") return <RecentlyViewed />;
         const item = navItems.find((n) => n.id === activeSection);
         return <PlaceholderSection title={item?.label ?? ""} />;
     }

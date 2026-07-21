@@ -53,6 +53,26 @@ export interface RecommendedProduct {
 export interface CategorySuggestion {
     id: string;
     name: string;
-    icon: string; // emoji or icon key
+    icon: string; // lucide icon key
     productCount: number;
+}
+
+export interface RecommendedProduct {
+    id: string;
+    name: string;
+    supplierName: string;
+    priceRange: string;
+    minOrder: string;
+    verified: boolean;
+    badge?: "Hot Deal" | "Trending" | "New";
+    icon: string; // lucide icon key, rendered in the image area until real photos exist
+}
+
+export interface Testimonial {
+    id: string;
+    quote: string;
+    name: string;
+    role: string;
+    location: string;
+    tag: string;
 }

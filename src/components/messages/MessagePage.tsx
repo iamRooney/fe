@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import Header from "./Header";
+// import Header from "./Header";
 import MessageSidebar from "./MessageSidebar";
 import ChatWindow from "./ChatWindow";
 import SupplierInfo from "./SupplierInfo";
@@ -14,7 +14,7 @@ export default function MessagesPage() {
 
     return (
         <div className="flex h-screen flex-col bg-white">
-            <Header />
+            {/* <Header /> */}
 
             <div className="border-b border-slate-200 bg-white px-6 py-3">
                 <Link

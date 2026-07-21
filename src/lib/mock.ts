@@ -40,10 +40,39 @@ export const mockRecommendedProducts: RecommendedProduct[] = [
 ];
 
 export const mockCategorySuggestions: CategorySuggestion[] = [
-    { id: "cat1", name: "Industrial Machinery", icon: "⚙️", productCount: 1240 },
-    { id: "cat2", name: "Electronics", icon: "🔌", productCount: 3120 },
-    { id: "cat3", name: "Textiles", icon: "🧵", productCount: 890 },
-    { id: "cat4", name: "Packaging", icon: "📦", productCount: 1560 },
-    { id: "cat5", name: "Construction", icon: "🏗️", productCount: 2100 },
-    { id: "cat6", name: "Agriculture", icon: "🌾", productCount: 640 },
+    { id: "cat1", name: "IT Services", icon: "monitor", productCount: 1240 },
+    { id: "cat2", name: "Electrical", icon: "zap", productCount: 3120 },
+    { id: "cat3", name: "Healthcare", icon: "briefcase", productCount: 890 },
+    { id: "cat4", name: "Industrial", icon: "bar-chart", productCount: 1560 },
+    { id: "cat5", name: "Logistics", icon: "truck", productCount: 2100 },
+    { id: "cat6", name: "Chemicals", icon: "flask", productCount: 640 },
+    { id: "cat7", name: "Furniture", icon: "armchair", productCount: 480 },
+    { id: "cat8", name: "Automotive", icon: "car", productCount: 970 },
+];
+
+export const mockTestimonials: Testimonial[] = [
+    {
+        id: "t1",
+        quote: "From identifying suppliers to ensuring timely delivery — the team manages everything end-to-end.",
+        name: "Rao Girwale",
+        role: "Vikaa Foods",
+        location: "Maharashtra",
+        tag: "End-to-end sourcing",
+    },
+    {
+        id: "t2",
+        quote: "I only review and approve samples. Payment Protection means I buy with full confidence every time.",
+        name: "Akhila",
+        role: "E-commerce Seller · Imitation Jewellery",
+        location: "Karnataka",
+        tag: "₹10L Protection",
+    },
+    {
+        id: "t3",
+        quote: "Unlimited RFQs changed how we operate. The ₹999 fee pays for itself in the first order.",
+        name: "Dwaipayan Das",
+        role: "Dwip Retail",
+        location: "Hyderabad",
+        tag: "Unlimited RFQs",
+    },
 ];
