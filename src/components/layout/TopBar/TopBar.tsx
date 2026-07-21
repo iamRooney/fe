@@ -27,7 +27,7 @@ export default function TopBar() {
                         </Link> */}
 
                         <Link
-                            href="/messages"
+                            href="/dashboard/messages"
                             className="flex items-center gap-2 hover:text-orange-400 transition"
                         >
                             <MessageCircleMore size={16} />
@@ -35,10 +35,17 @@ export default function TopBar() {
                         </Link>
 
                         <Link
-                            href="/login"
+                            href="/auth/login"
                             className="font-medium hover:text-orange-400 transition"
                         >
-                            Login / Sign up
+                            Login
+                        </Link>
+
+                        <Link
+                            href="/auth/register"
+                            className="font-medium hover:text-orange-400 transition"
+                        >
+                            Register
                         </Link>
 
                     </div>

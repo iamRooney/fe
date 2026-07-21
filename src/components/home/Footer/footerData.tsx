@@ -5,27 +5,56 @@ import { IoShareSocial } from "react-icons/io5";
 
 
 export const companyLinks = [
-    "About Us",
-    // "Careers",
-    // "Press & Media",
-    "Contact Us",
-    // "Sustainability",
-    "Terms & Conditions",
-    "Privacy Policy",
+    {
+        title: "About Us",
+        href: "/aboutus",
+    },
+    {
+        title: "Contact Us",
+        href: "/aboutus#contact",
+    },
+    {
+        title: "Terms & Conditions",
+        href: "/policies#terms",
+    },
+    {
+        title: "Privacy Policy",
+        href: "/policies#privacy",
+    },
 ];
 
 export const policies = [
-    "Buyer Policies",
-    "Seller Policies",
-    "Refund Policy",
+    {
+        title: "Buyer Policy",
+        href: "/policies#buyer-policy",
+    },
+    {
+        title: "Seller Policy",
+        href: "/policies#seller-policy",
+    },
+    {
+        title: "Refund Policy",
+        href: "/policies#refund",
+    },
 ];
 
 export const helpLinks = [
-    // "Help Center",
-    "Trade Assurance",
-    "Report Abuse",
-    "FAQ",
-    "Support",
+    {
+        title: "Trade Assurance",
+        href: "/trustseal",
+    },
+    // {
+    //     title: "Report Abuse",
+    //     href: "/report-abuse",
+    // },
+    {
+        title: "FAQ",
+        href: "/trustseal#faqs",
+    },
+    // {
+    //     title: "Support",
+    //     href: "/support",
+    // },
 ];
 
 export const socials = [

@@ -62,11 +62,12 @@ export default function SupplierCard({ supplier }: Props) {
       {/* Footer */}
 
       <div className="mt-6 flex items-center justify-between">
+
         <button className="rounded-lg bg-[#173F84] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#0f2d62]">
           Contact Supplier
         </button>
 
-        <button className="rounded-lg border p-2 transition hover:bg-gray-100">
+        <button className="rounded-lg border p-2 transition hover:bg-red-500">
           <Heart size={18} />
         </button>
       </div>

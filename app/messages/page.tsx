@@ -1,5 +1,6 @@
-import Header from "@/components/messages/Header";
+import MessagesPage from "@/components/messages/MessagePage";
 
-export default function Messages() {
-    return <Header />;
+export default function Page() {
+
+    return <MessagesPage />;
 }

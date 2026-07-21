@@ -7,7 +7,7 @@ export default function TopBar() {
 
                 <div className="flex items-center gap-8 text-sm">
 
-                    <button className="flex items-center gap-2 hover:text-gray-200 transition">
+                    <button className="flex items-center gap-5 hover:text-gray-200 transition">
                         <Globe size={16} />
                         <span>English</span>
                     </button>

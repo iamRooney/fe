@@ -15,9 +15,9 @@ export default function TrendingProducts() {
                         </h2>
                     </div>
 
-                    <button className="rounded-full border px-5 py-2 text-gray-500 hover:bg-gray-100">
+                    {/* <button className="rounded-full border px-5 py-2 text-gray-500 hover:bg-gray-100">
                         View All →
-                    </button>
+                    </button> */}
                 </div>
 
                 <ProductSlider />

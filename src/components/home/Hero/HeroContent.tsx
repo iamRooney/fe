@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button/Button";
 import HeroStats from "./HeroStats";
+import Link from "next/link";
 
 export default function HeroContent() {
     return (
@@ -27,13 +28,17 @@ export default function HeroContent() {
 
             <div className="mt-10 flex flex-wrap gap-5">
 
-                <Button>
-                    Explore Marketplace
-                </Button>
+                <Link href="/categories">
+                    <Button variant="primary">
+                        Explore Marketplace
+                    </Button>
+                </Link>
 
-                <Button variant="secondary">
-                    Learn More
-                </Button>
+                <Link href="/aboutus">
+                    <Button variant="secondary">
+                        Learn More
+                    </Button>
+                </Link>
 
             </div>
 

@@ -1,11 +1,11 @@
 import TopBar from "../trustseal/TopBar";
-import Navbar from "../trustseal/NavBar";
+// import Navbar from "../trustseal/NavBar";
 
 export default function Header() {
     return (
         <header className="sticky top-0 z-50 bg-white shadow-sm">
             <TopBar />
-            <Navbar />
+            {/* <Navbar /> */}
         </header>
     );
 }

@@ -25,9 +25,9 @@ export default function Categories() {
 
                     </div>
 
-                    <button className="rounded-full border px-5 py-2 hover:bg-gray-100 text-gray-500">
+                    {/* <button className="rounded-full border px-5 py-2 hover:bg-gray-100 text-gray-500">
                         View All →
-                    </button>
+                    </button> */}
 
                 </div>
 

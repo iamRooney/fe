@@ -6,11 +6,11 @@ export default function Copyright() {
                     © 2026 Exbhex Marketplace. All Rights Reserved.
                 </p>
 
-                <div className="flex gap-6">
+                {/* <div className="flex gap-6">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Service</a>
                     <a href="#">Legal Notices</a>
-                </div>
+                </div> */}
             </div>
         </div>
     );

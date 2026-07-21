@@ -1,6 +1,13 @@
+import Link from "next/link";
+
+interface FooterLinkItem {
+    title: string;
+    href: string;
+}
+
 interface Props {
     title: string;
-    links: string[];
+    links: FooterLinkItem[];
 }
 
 export default function FooterLinks({
@@ -15,11 +22,13 @@ export default function FooterLinks({
 
             <ul className="space-y-3">
                 {links.map((link) => (
-                    <li
-                        key={link}
-                        className="cursor-pointer text-gray-300 transition hover:text-orange-400"
-                    >
-                        {link}
+                    <li key={link.href}>
+                        <Link
+                            href={link.href}
+                            className="cursor-pointer text-gray-300 transition-colors duration-200 hover:text-orange-400"
+                        >
+                            {link.title}
+                        </Link>
                     </li>
                 ))}
             </ul>
