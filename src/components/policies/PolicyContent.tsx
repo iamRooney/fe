@@ -8,7 +8,19 @@ export default function PolicyContent() {
                 id="privacy"
                 title="Privacy Policy"
             >
-                Privacy policy content...
+                At Exbhex, your privacy matters.
+                We collect only the information
+                necessary to create your account,
+                display your business profile, and
+                connect buyers with suppliers. Your
+                information is protected using
+                industry-standard security practices,
+                and we never sell your personal data.
+                Any business information you choose to
+                publish, such as your company name,
+                products, or contact details, may be
+                visible to other users of the platform.
+
             </PolicySection>
 
             <PolicySection
