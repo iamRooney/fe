@@ -21,7 +21,7 @@ export default function RegisterCard({ mode }: Props) {
 
     return (
         <section className="mx-auto w-full max-w-md">
-            <div className="overflow-hidden rounded-[32px] border border-slate-200 bg-white p-10 shadow-2xl">
+            <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-white p-6 shadow-2xl sm:rounded-[32px] sm:p-10">
                 <AnimatePresence mode="wait">
                     {step === "role" ? (
                         <motion.div

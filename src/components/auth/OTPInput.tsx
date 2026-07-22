@@ -24,13 +24,13 @@ export default function OTPInput({
 
         setValue(updated);
 
-        if (digit && index < 5) {
+        if (digit && index < value.length - 1) {
             inputs.current[index + 1]?.focus();
         }
     };
 
     return (
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center gap-2 sm:gap-3">
             {value.map((digit, index) => (
                 <input
                     key={index}
@@ -42,7 +42,7 @@ export default function OTPInput({
                         handleChange(index, e.target.value)
                     }
                     maxLength={1}
-                    className="h-14 w-14 rounded-xl border text-center text-2xl font-bold outline-none focus:border-blue-600"
+                    className="h-11 w-11 rounded-xl border text-center text-xl font-bold outline-none focus:border-blue-600 sm:h-14 sm:w-14 sm:text-2xl"
                 />
             ))}
         </div>

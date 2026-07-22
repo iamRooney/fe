@@ -17,7 +17,7 @@ interface Props {
 export default function OTPStep({ mode, phone, role, onBack }: Props) {
     const router = useRouter();
 
-    const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+    const [otp, setOtp] = useState(["", "", "", ""]);
     const [timer, setTimer] = useState(30);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -40,8 +40,8 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        if (otpValue !== "123456") {
-            setError("Invalid OTP. Use 123456 for demo.");
+        if (otpValue !== "1234") {
+            setError("Invalid OTP. Use 1234 for demo.");
             setLoading(false);
             return;
         }
@@ -95,8 +95,8 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
                 disabled={!verify || loading}
                 onClick={handleVerify}
                 className={`mt-8 w-full rounded-2xl py-4 font-semibold transition-all duration-300 ${verify && !loading
-                        ? "bg-blue-600 text-white hover:bg-blue-700"
-                        : "cursor-not-allowed bg-slate-200 text-slate-400"
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "cursor-not-allowed bg-slate-200 text-slate-400"
                     }`}
             >
                 {loading ? "Verifying..." : mode === "register" ? "Create Account" : "Login"}
@@ -108,7 +108,7 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
                         onClick={() => {
                             setTimer(30);
                             setError("");
-                            setOtp(["", "", "", "", "", ""]);
+                            setOtp(["", "", "", ""]);
                         }}
                         className="font-semibold text-blue-600 hover:underline"
                     >

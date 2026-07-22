@@ -27,7 +27,7 @@ export default function AuthLayout({
                 }}
             />
 
-            <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-between px-6 py-10">
+            <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4 py-8 sm:px-6 sm:py-10 lg:justify-between">
 
                 <LeftPanel />
 
