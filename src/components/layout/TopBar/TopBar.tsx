@@ -8,12 +8,13 @@ export default function TopBar() {
     return (
         <div className="bg-[#0B3A78] text-white text-sm">
             <Container>
-                <div className="flex h-10 items-center justify-between">
-                    <div />
+                <div className="flex h-10 items-center justify-end sm:justify-between">
 
-                    <div className="flex items-center gap-6">
+                    <div className="hidden sm:block" />
 
-                        <button className="flex items-center gap-2 hover:text-orange-400 transition">
+                    <div className="flex items-center gap-3 sm:gap-6">
+
+                        <button className="hidden items-center gap-2 hover:text-orange-400 transition sm:flex">
                             <Globe size={16} />
                             English
                         </button>
@@ -31,7 +32,7 @@ export default function TopBar() {
                             className="flex items-center gap-2 hover:text-orange-400 transition"
                         >
                             <MessageCircleMore size={16} />
-                            Messages
+                            <span className="hidden md:inline">Messages</span>
                         </Link>
 
                         <Link

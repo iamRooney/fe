@@ -11,7 +11,7 @@ export default function Hero() {
 
             <Container>
 
-                <div className="relative grid min-h-[640px] items-center gap-12 py-16 lg:grid-cols-[1.15fr_0.85fr]">
+                <div className="relative grid items-center gap-10 py-12 sm:py-16 lg:min-h-[640px] lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
                     <HeroContent />
 
                     <RequirementForm />

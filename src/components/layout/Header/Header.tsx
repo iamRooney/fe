@@ -7,18 +7,26 @@ export default function Header() {
     return (
         <header className="bg-white border-b border-gray-200">
             <Container>
-                <div className="flex h-[88px] items-center justify-between gap-8">
+                <div className="flex flex-col gap-4 py-4 lg:h-[88px] lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:py-0">
 
-                    {/* Logo */}
-                    <Link href="/" className="shrink-0">
-                        <Image
-                            src="/logos/Logo.png"
-                            alt="Exbhex"
-                            width={145}
-                            height={42}
-                            priority
-                        />
-                    </Link>
+                    <div className="flex items-center justify-between gap-4">
+                        {/* Logo */}
+                        <Link href="/" className="shrink-0">
+                            <Image
+                                src="/logos/Logo.png"
+                                alt="Exbhex"
+                                width={145}
+                                height={42}
+                                priority
+                                className="h-auto w-[120px] sm:w-[145px]"
+                            />
+                        </Link>
+
+                        {/* Get Best Price (mobile/tablet position) */}
+                        <button className="flex h-[42px] shrink-0 items-center justify-center rounded-xl bg-[#163A7A] px-4 text-sm font-semibold text-white transition hover:bg-[#0F2F67] lg:hidden">
+                            Get Best Price
+                        </button>
+                    </div>
 
                     {/* Search Bar */}
                     <div className="flex flex-1 items-center">
@@ -27,7 +35,7 @@ export default function Header() {
 
                             {/* Products */}
 
-                            <button className="flex w-[130px] items-center justify-center gap-2 border-r border-gray-300 text-[15px] font-medium text-gray-700 hover:bg-gray-50">
+                            <button className="hidden w-[130px] items-center justify-center gap-2 border-r border-gray-300 text-[15px] font-medium text-gray-700 hover:bg-gray-50 md:flex">
 
                                 Products
 
@@ -37,7 +45,7 @@ export default function Header() {
 
                             {/* Location */}
 
-                            <button className="flex w-[150px] items-center justify-center gap-2 border-r border-gray-300 text-[15px] font-medium text-gray-700 hover:bg-gray-50">
+                            <button className="hidden w-[150px] items-center justify-center gap-2 border-r border-gray-300 text-[15px] font-medium text-gray-700 hover:bg-gray-50 md:flex">
 
                                 <MapPin size={17} />
 
@@ -50,16 +58,16 @@ export default function Header() {
                             <input
                                 type="text"
                                 placeholder="Search for Products, Services or Companies..."
-                                className="flex-1 px-6 text-[15px] placeholder:text-gray-400 focus:outline-none text-gray-500"
+                                className="min-w-0 flex-1 px-4 text-[15px] placeholder:text-gray-400 focus:outline-none text-gray-500 sm:px-6"
                             />
 
                             {/* Search Button */}
 
-                            <button className="flex w-[170px] items-center justify-center gap-2 bg-[#F89A1C] font-medium text-white transition hover:bg-[#e88910]">
+                            <button className="flex w-[56px] shrink-0 items-center justify-center gap-2 bg-[#F89A1C] font-medium text-white transition hover:bg-[#e88910] sm:w-[170px]">
 
                                 <Search size={18} />
 
-                                Search
+                                <span className="hidden sm:inline">Search</span>
 
                             </button>
 
@@ -67,9 +75,9 @@ export default function Header() {
 
                     </div>
 
-                    {/* Get Best Price */}
+                    {/* Get Best Price (desktop position) */}
 
-                    <button className="flex h-[48px] w-[190px] items-center justify-center rounded-2xl bg-[#163A7A] text-[16px] font-semibold text-white transition hover:bg-[#0F2F67]">
+                    <button className="hidden h-[48px] w-[190px] shrink-0 items-center justify-center rounded-2xl bg-[#163A7A] text-[16px] font-semibold text-white transition hover:bg-[#0F2F67] lg:flex">
 
                         Get Best Price
 

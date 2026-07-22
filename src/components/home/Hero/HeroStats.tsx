@@ -19,16 +19,16 @@ const stats = [
 
 export default function HeroStats() {
     return (
-        <div className="mt-16 grid grid-cols-2 gap-8 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-4">
 
             {stats.map((item) => (
                 <div key={item.title}>
 
-                    <h2 className="text-4xl font-black text-white">
+                    <h2 className="text-2xl font-black text-white sm:text-3xl lg:text-4xl">
                         {item.number}
                     </h2>
 
-                    <p className="mt-2 text-blue-200">
+                    <p className="mt-2 text-sm text-blue-200 sm:text-base">
                         {item.title}
                     </p>
 

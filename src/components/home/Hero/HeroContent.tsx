@@ -8,7 +8,7 @@ export default function HeroContent() {
 
 
 
-            <h1 className="mt-8 max-w-[620px] text-6xl font-extrabold leading-[1.08] tracking-tight text-white">
+            <h1 className="mt-8 max-w-[620px] text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl lg:leading-[1.08]">
 
                 Your Global Trade Partner,
 
@@ -18,7 +18,7 @@ export default function HeroContent() {
 
             </h1>
 
-            <p className="mt-8 max-w-[520px] text-base leading-7 text-blue-100">
+            <p className="mt-6 max-w-[520px] text-base leading-7 text-blue-100 sm:mt-8">
 
                 Discover verified manufacturers, suppliers and exporters
                 from around the globe. Source products with confidence
@@ -26,7 +26,7 @@ export default function HeroContent() {
 
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-5">
+            <div className="mt-8 flex flex-wrap gap-4 sm:mt-10 sm:gap-5">
 
                 <Link href="/categories">
                     <Button variant="primary">
