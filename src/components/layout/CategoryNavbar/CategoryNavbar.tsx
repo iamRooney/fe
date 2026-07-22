@@ -25,12 +25,12 @@ export default function CategoryNavbar() {
 
                 <div className="flex h-12 items-center justify-between">
 
-                    <div className="flex gap-10">
+                    <div className="scrollbar-hide flex h-full w-full items-center gap-6 overflow-x-auto sm:gap-10">
 
                         {categories.map(({ icon: Icon, label }) => (
                             <button
                                 key={label}
-                                className="flex items-center gap-2 text-sm hover:text-orange-400 transition"
+                                className="flex shrink-0 items-center gap-2 whitespace-nowrap text-sm hover:text-orange-400 transition"
                             >
                                 <Icon size={16} />
                                 {label}

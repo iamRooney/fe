@@ -9,7 +9,7 @@ import MessagesPage from "../messages/MessagePage";
 import PlaceholderSection from "./PlaceholderSection";
 import MyEnquiries from "./buyer/Enquiries";
 import PostRFQ from "./buyer/PostRFQ";
-import SavedSuppliers from "./buyer/saved";
+import SavedSuppliers from "./buyer/Saved";
 import RecentlyViewed from "./buyer/Recently";
 
 export default function DashboardShell() {
