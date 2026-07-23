@@ -1,24 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { Send, Paperclip } from "lucide-react";
+import { Send, ArrowLeft } from "lucide-react";
 import EmptyState from "./EmptyState";
 import { mockConversations, mockMessages } from "./mock-data";
 
 interface ChatWindowProps {
     conversationId: string | null;
+    onBack?: () => void;
+    hiddenOnMobile?: boolean;
 }
 
 function formatTime(iso: string) {
     return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
-export default function ChatWindow({ conversationId }: ChatWindowProps) {
+export default function ChatWindow({ conversationId, onBack, hiddenOnMobile }: ChatWindowProps) {
     const [draft, setDraft] = useState("");
 
     if (!conversationId) {
         return (
-            <section className="flex-1 bg-slate-50">
+            <section className={`flex-1 bg-slate-50 ${hiddenOnMobile ? "hidden lg:block" : "block"}`}>
                 <EmptyState />
             </section>
         );
@@ -28,8 +30,19 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
     const messages = mockMessages[conversationId] ?? [];
 
     return (
-        <section className="flex flex-1 flex-col bg-slate-50">
-            <div className="flex items-center gap-3 border-b border-slate-200 bg-white px-6 py-4">
+        <section
+            className={`flex-1 flex-col bg-slate-50 lg:flex ${hiddenOnMobile ? "hidden" : "flex"
+                }`}
+        >
+            <div className="flex items-center gap-3 border-b border-slate-200 bg-white px-4 py-4 sm:px-6">
+                <button
+                    onClick={onBack}
+                    className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 lg:hidden"
+                    aria-label="Back to conversations"
+                >
+                    <ArrowLeft className="h-5 w-5" />
+                </button>
+
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0057D9] text-xs font-medium text-white">
                     {conversation?.supplierAvatar}
                 </div>
@@ -39,14 +52,14 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
                 </div>
             </div>
 
-            <div className="flex-1 space-y-4 overflow-y-auto px-6 py-6">
+            <div className="flex-1 space-y-4 overflow-y-auto px-4 py-6 sm:px-6">
                 {messages.map((m) => (
                     <div
                         key={m.id}
                         className={`flex ${m.senderType === "buyer" ? "justify-end" : "justify-start"}`}
                     >
                         <div
-                            className={`max-w-[70%] rounded-2xl px-4 py-2.5 text-sm ${m.senderType === "buyer"
+                            className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm sm:max-w-[70%] ${m.senderType === "buyer"
                                 ? "bg-[#0057D9] text-white"
                                 : "border border-slate-200 bg-white text-slate-800"
                                 }`}
@@ -63,7 +76,7 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
                 ))}
             </div>
 
-            <div className="border-t border-slate-200 bg-white p-4">
+            <div className="border-t border-slate-200 bg-white p-3 sm:p-4">
                 <div className="flex items-end gap-2">
                     {/* <button className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
                         <Paperclip className="h-5 w-5" />

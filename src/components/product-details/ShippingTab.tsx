@@ -5,7 +5,7 @@ export default function ShippingTab() {
         Shipping Information
       </h2>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="rounded-lg bg-gray-50 p-5">
           <h4 className="font-semibold text-gray-500">
             Packaging

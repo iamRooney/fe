@@ -24,24 +24,30 @@ export default function CategoryPage() {
                 <Container>
 
                     {/* Breadcrumb */}
-                    <Breadcrumb />
+                    <Breadcrumb
+                        items={[
+                            { label: "Home", href: "/" },
+                            { label: "Categories", href: "/categories" },
+                            { label: "Arduino Development Boards" },
+                        ]}
+                    />
 
                     {/* Nearby Cities */}
                     <CityBar />
 
                     {/* Main Content */}
-                    <div className="mt-6 flex gap-6 items-start">
+                    <div className="mt-6 flex flex-col items-start gap-6 lg:flex-row">
 
                         {/* Left Sidebar */}
                         <FilterSidebar />
 
                         {/* Right Content */}
-                        <div className="flex-1 space-y-6">
+                        <div className="w-full flex-1 space-y-6">
 
                             <ProductGrid />
 
-                            <div className="grid grid-cols-3 gap-6">
-                                <div className="col-span-2">
+                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                                <div className="lg:col-span-2">
                                     <RFQSection />
                                 </div>
 
