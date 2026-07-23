@@ -42,14 +42,6 @@ export interface RecentlyViewedItem {
     viewedAt: string;
 }
 
-export interface RecommendedProduct {
-    id: string;
-    name: string;
-    supplierName: string;
-    priceRange: string;
-    image: string;
-}
-
 export interface CategorySuggestion {
     id: string;
     name: string;
