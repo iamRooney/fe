@@ -30,13 +30,13 @@ export const mockRecentlyViewed: RecentlyViewedItem[] = [
     { id: "rv2", name: "Cotton Blend Fabric Roll", supplierName: "Guangzhou Yuetai Textiles", viewedAt: "2026-07-20T16:00:00Z" },
 ];
 
-import { RecommendedProduct, CategorySuggestion, Testimonial } from "./types";
+import { RecommendedProduct, CategorySuggestion } from "./types";
 
 export const mockRecommendedProducts: RecommendedProduct[] = [
-    { id: "rp1", name: "Industrial Ball Bearings", supplierName: "Ningbo Star Hardware", priceRange: "$0.40 - $0.85", minOrder: "500 pcs", verified: true, badge: "Hot Deal", icon: "cog" },
-    { id: "rp2", name: "PVC Pipe Fittings Set", supplierName: "Zhejiang Hexin Plastics Co.", priceRange: "$1.20 - $1.60", minOrder: "200 sets", verified: true, icon: "package" },
-    { id: "rp3", name: "Solar Panel Mounting Bracket", supplierName: "Shenzhen Bright LED Co.", priceRange: "$3.00 - $4.50", minOrder: "50 pcs", verified: false, badge: "Trending", icon: "sun" },
-    { id: "rp4", name: "Cotton Canvas Roll", supplierName: "Guangzhou Yuetai Textiles", priceRange: "$2.80 - $3.30", minOrder: "100 rolls", verified: true, badge: "New", icon: "layers" },
+    { id: "rp1", name: "Industrial Ball Bearings", supplierName: "Ningbo Star Hardware", priceRange: "$0.40 - $0.85", image: "NS" },
+    { id: "rp2", name: "PVC Pipe Fittings Set", supplierName: "Zhejiang Hexin Plastics Co.", priceRange: "$1.20 - $1.60", image: "ZH" },
+    { id: "rp3", name: "Solar Panel Mounting Bracket", supplierName: "Shenzhen Bright LED Co.", priceRange: "$3.00 - $4.50", image: "SB" },
+    { id: "rp4", name: "Cotton Canvas Roll", supplierName: "Guangzhou Yuetai Textiles", priceRange: "$2.80 - $3.30", image: "GY" },
 ];
 
 export const mockCategorySuggestions: CategorySuggestion[] = [

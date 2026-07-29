@@ -8,9 +8,6 @@ export interface AuthState {
     role: UserRole | null;
 }
 
-// Demo implementation — swap this for reading a decoded JWT / session cookie
-// once there's a real backend. Keep the AuthState shape the same so nothing
-// else in the app needs to change.
 export function getAuthState(): AuthState {
     if (typeof window === "undefined") {
         return { isAuthenticated: false, role: null };
@@ -23,4 +20,16 @@ export function getAuthState(): AuthState {
         isAuthenticated: Boolean(token),
         role: role === "buyer" || role === "seller" ? role : null,
     };
+}
+
+/** Persist the Sanctum token (and role, once known) after a successful OTP verify. */
+export function setAuth(token: string, role?: UserRole | null) {
+    localStorage.setItem(TOKEN_KEY, token);
+    if (role) localStorage.setItem(ROLE_KEY, role);
+}
+
+/** Clear stored auth on logout. */
+export function clearAuth() {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(ROLE_KEY);
 }

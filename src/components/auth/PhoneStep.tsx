@@ -4,6 +4,9 @@ import { ArrowLeft, ArrowRight, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
+import { sendOtp } from "@/lib/api/auth";
+import { ApiError } from "@/lib/api/client";
+
 interface Props {
     mode: "login" | "register";
     phone: string;
@@ -30,29 +33,19 @@ export default function PhoneStep({
         setLoading(true);
         setError("");
 
-        await new Promise((resolve) => setTimeout(resolve, 800));
-
-        const existingUsers = ["7012991430", "9876543210"];
-        const isExistingUser = existingUsers.includes(phone);
-
-        if (mode === "login") {
-            if (!isExistingUser) {
-                setError("No account found with this mobile number.");
-                setLoading(false);
-                return;
-            }
+        try {
+            // Note: send-otp does a firstOrCreate on the backend, so it always
+            // succeeds for both login and register — there's no separate
+            // "does this account exist" check yet. Once verify-otp responds
+            // we redirect based on the account's actual profile-completion
+            // state rather than the client-picked mode (see OTPStep).
+            await sendOtp(phone);
+            onProceed();
+        } catch (err) {
+            setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
         }
-
-        if (mode === "register") {
-            if (isExistingUser) {
-                setError("This mobile number is already registered. Please login.");
-                setLoading(false);
-                return;
-            }
-        }
-
-        onProceed();
-        setLoading(false);
     };
 
     return (

@@ -13,7 +13,7 @@ export default function SavedSuppliers() {
     }
 
     return (
-        <div className="p-4 sm:p-6">
+        <div className="p-6">
             <h1 className="text-xl font-semibold text-slate-900">Saved Suppliers & Products</h1>
             <p className="mt-1 text-sm text-slate-500">Items you've bookmarked for later.</p>
 
@@ -25,7 +25,7 @@ export default function SavedSuppliers() {
                     <p className="mt-3 text-sm text-slate-500">Nothing saved yet.</p>
                 </div>
             ) : (
-                <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3">
+                <div className="mt-5 grid grid-cols-3 gap-4">
                     {items.map((item) => (
                         <div key={item.id} className="rounded-xl border border-slate-200 bg-white p-4">
                             <div className="flex items-start justify-between">

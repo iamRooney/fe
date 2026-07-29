@@ -12,7 +12,7 @@ interface DashboardOverviewProps {
 function SellerOverview() {
     return (
         <>
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div className="grid grid-cols-4 gap-4">
                 <StatCard icon={Eye} label="Profile views" value="1,204" />
                 <StatCard icon={MessageSquare} label="New enquiries" value="18" />
                 <StatCard
@@ -57,7 +57,7 @@ function SellerOverview() {
 
 export default function DashboardOverview({ role }: DashboardOverviewProps) {
     return (
-        <div className="p-4 sm:p-6">
+        <div className="p-6">
             <h1 className="text-xl font-semibold text-slate-900">Welcome back</h1>
             <p className="mt-1 text-sm text-slate-500">
                 {role === "seller"

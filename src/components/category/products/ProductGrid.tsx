@@ -5,10 +5,10 @@ import { ChevronDown } from "lucide-react";
 export default function ProductGrid() {
     return (
         <section className="flex-1">
-            <div className="mb-5 rounded-md border border-gray-200 bg-white p-4 sm:p-5">
-                <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="mb-5 rounded-md border border-gray-200 bg-white p-5">
+                <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold text-[#0D274D] sm:text-[38px]">
+                        <h1 className="text-[38px] font-bold text-[#0D274D]">
                             Arduino Development Boards
                         </h1>
 
@@ -28,7 +28,7 @@ export default function ProductGrid() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-4 gap-4">
                 {products.map((product) => (
                     <ProductCard
                         key={product.id}

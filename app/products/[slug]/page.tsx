@@ -15,33 +15,33 @@ export default function ProductDetailsPage() {
     return (
         <>
             <Header />
-            <main className="bg-[#F5F7FA] min-h-screen py-6">
+        <main className="bg-[#F5F7FA] min-h-screen py-6">
+            
+            <Container>
+                <ProductBreadcrumb product={{ name: "Sample Product" }} />
 
-                <Container>
-                    <ProductBreadcrumb product={{ name: "Sample Product" }} />
+                <div className="mt-6 grid grid-cols-12 gap-6">
+                    {/* Left */}
+                    <div className="col-span-8 space-y-6">
+                        <ProductGallery />
 
-                    <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
-                        {/* Left */}
-                        <div className="space-y-6 lg:col-span-8">
-                            <ProductGallery />
+                        <ProductInfo />
 
-                            <ProductInfo />
+                        <ProductTabs />
 
-                            <ProductTabs />
-
-                            <SimilarProducts />
-                        </div>
-
-                        {/* Right */}
-                        <div className="space-y-6 lg:col-span-4">
-                            <SupplierCard />
-
-                            <InquiryForm />
-                        </div>
+                        <SimilarProducts />
                     </div>
-                </Container>
-            </main>
-            <Footer />
+
+                    {/* Right */}
+                    <div className="col-span-4 space-y-6">
+                        <SupplierCard />
+
+                        <InquiryForm />
+                    </div>
+                </div>
+            </Container>
+        </main>
+        <Footer />
         </>
     );
 }

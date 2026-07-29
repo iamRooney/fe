@@ -1,1 +1,1 @@
-export { default } from "@/components/category/products/ProductCard";
+export { default } from "./ProductCard";

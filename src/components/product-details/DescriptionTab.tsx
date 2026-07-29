@@ -20,7 +20,7 @@ export default function DescriptionTab() {
           Key Features
         </h3>
 
-        <ul className="grid grid-cols-1 gap-4 text-gray-500 sm:grid-cols-2">
+        <ul className="grid grid-cols-2 gap-4 text-gray-500">
           <li>✔ ATmega2560 Microcontroller</li>
           <li>✔ 54 Digital I/O Pins</li>
           <li>✔ 16 Analog Inputs</li>

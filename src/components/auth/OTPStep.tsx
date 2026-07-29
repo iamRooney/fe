@@ -6,6 +6,9 @@ import { useRouter } from "next/navigation";
 
 import OTPInput from "./OTPInput";
 import { UserRole } from "@/lib/types";
+import { sendOtp, verifyOtp } from "@/lib/api/auth";
+import { ApiError } from "@/lib/api/client";
+import { setAuth } from "@/lib/auth";
 
 interface Props {
     mode: "login" | "register";
@@ -14,12 +17,15 @@ interface Props {
     onBack: () => void;
 }
 
+const OTP_LENGTH = 6;
+
 export default function OTPStep({ mode, phone, role, onBack }: Props) {
     const router = useRouter();
 
-    const [otp, setOtp] = useState(["", "", "", ""]);
+    const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(""));
     const [timer, setTimer] = useState(30);
     const [loading, setLoading] = useState(false);
+    const [resending, setResending] = useState(false);
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -36,28 +42,39 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
         setLoading(true);
         setError("");
 
-        const otpValue = otp.join("");
+        try {
+            const otpValue = otp.join("");
+            const res = await verifyOtp(phone, otpValue);
+            const { user, token } = res.data;
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+            // Register picks a role up front; login discovers it (and whether
+            // the profile is even complete yet) from the account itself.
+            setAuth(token, mode === "register" ? role : user.role as UserRole | null);
 
-        if (otpValue !== "1234") {
-            setError("Invalid OTP. Use 1234 for demo.");
+            if (!user.is_profile_completed) {
+                router.push("/auth/complete-profile");
+            } else {
+                router.push("/dashboard");
+            }
+        } catch (err) {
+            setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+        } finally {
             setLoading(false);
-            return;
         }
+    };
 
-        localStorage.setItem("token", "demo-token");
+    const handleResend = async () => {
+        setResending(true);
+        setError("");
 
-        if (mode === "register" && role) {
-            localStorage.setItem("userRole", role);
-        }
-
-        setLoading(false);
-
-        if (mode === "register") {
-            router.push("/auth/complete-profile");
-        } else {
-            router.push("/dashboard");
+        try {
+            await sendOtp(phone);
+            setTimer(30);
+            setOtp(Array(OTP_LENGTH).fill(""));
+        } catch (err) {
+            setError(err instanceof ApiError ? err.message : "Couldn't resend the code. Please try again.");
+        } finally {
+            setResending(false);
         }
     };
 
@@ -105,14 +122,11 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
             <div className="mt-6 text-center">
                 {timer === 0 ? (
                     <button
-                        onClick={() => {
-                            setTimer(30);
-                            setError("");
-                            setOtp(["", "", "", ""]);
-                        }}
-                        className="font-semibold text-blue-600 hover:underline"
+                        onClick={handleResend}
+                        disabled={resending}
+                        className="font-semibold text-blue-600 hover:underline disabled:cursor-not-allowed disabled:text-slate-400"
                     >
-                        Resend OTP
+                        {resending ? "Resending..." : "Resend OTP"}
                     </button>
                 ) : (
                     <p className="text-slate-500">

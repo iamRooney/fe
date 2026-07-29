@@ -56,7 +56,7 @@ export default function PostRFQ() {
     }
 
     return (
-        <div className="mx-auto max-w-2xl p-4 sm:p-6">
+        <div className="mx-auto max-w-2xl p-6">
             <h1 className="text-xl font-semibold text-slate-900">Post an RFQ</h1>
             <p className="mt-1 text-sm text-slate-500">
                 Broadcast a sourcing request — matching suppliers can respond with quotes.
@@ -78,7 +78,7 @@ export default function PostRFQ() {
                     <CategorySelect selected={category} onChange={setCategory} multiple={false} />
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="mb-2 block text-sm font-medium text-slate-700">Quantity</label>
                         <input

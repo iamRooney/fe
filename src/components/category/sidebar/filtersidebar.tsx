@@ -4,7 +4,7 @@ import RecommendedSearches from "./recommendedsearches";
 
 export default function FilterSidebar() {
     return (
-        <aside className="w-full space-y-4 text-gray-500 lg:w-[280px] lg:shrink-0">
+        <aside className="w-[280px] shrink-0 space-y-4 text-gray-500">
             <FilterSection title="Price">
                 <div className="space-y-3">
                     {[

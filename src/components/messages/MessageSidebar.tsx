@@ -8,7 +8,6 @@ interface MessageSidebarProps {
     conversations: Conversation[];
     selectedId: string | null;
     onSelect: (id: string) => void;
-    hiddenOnMobile?: boolean;
 }
 
 type FilterTab = "all" | "unread" | "starred";
@@ -22,7 +21,7 @@ function timeAgo(iso: string) {
     return `${days}d ago`;
 }
 
-export default function MessageSidebar({ conversations, selectedId, onSelect, hiddenOnMobile }: MessageSidebarProps) {
+export default function MessageSidebar({ conversations, selectedId, onSelect }: MessageSidebarProps) {
     const [query, setQuery] = useState("");
     const [tab, setTab] = useState<FilterTab>("all");
 
@@ -35,10 +34,7 @@ export default function MessageSidebar({ conversations, selectedId, onSelect, hi
         });
 
     return (
-        <aside
-            className={`w-full flex-col border-r border-slate-200 bg-white lg:flex lg:w-[360px] ${hiddenOnMobile ? "hidden" : "flex"
-                }`}
-        >
+        <aside className="flex w-[360px] flex-col border-r border-slate-200 bg-white">
             <div className="border-b border-slate-200 p-5">
                 <h2 className="text-xl font-semibold text-slate-900">Messages</h2>
 

@@ -13,7 +13,7 @@ export default function MessagesPage() {
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
     return (
-        <div className="flex h-full flex-col bg-white">
+        <div className="flex h-screen flex-col bg-white">
             {/* <Header /> */}
 
             <div className="border-b border-slate-200 bg-white px-6 py-3">
@@ -31,13 +31,8 @@ export default function MessagesPage() {
                     conversations={mockConversations}
                     selectedId={selectedId}
                     onSelect={setSelectedId}
-                    hiddenOnMobile={!!selectedId}
                 />
-                <ChatWindow
-                    conversationId={selectedId}
-                    onBack={() => setSelectedId(null)}
-                    hiddenOnMobile={!selectedId}
-                />
+                <ChatWindow conversationId={selectedId} />
                 <SupplierInfo conversationId={selectedId} />
             </div>
         </div>
