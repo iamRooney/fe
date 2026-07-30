@@ -1,13 +1,14 @@
-import { LucideIcon } from "lucide-react";
+import { Boxes } from "lucide-react";
+import Image from "next/image";
 
 interface Props {
     title: string;
-    icon: LucideIcon;
+    iconUrl?: string | null;
 }
 
 export default function CategoryCard({
     title,
-    icon: Icon,
+    iconUrl,
 }: Props) {
     return (
         <div
@@ -31,8 +32,10 @@ export default function CategoryCard({
         >
             <div
                 className="
+        relative
         h-12
         w-12
+        overflow-hidden
         rounded-full
         bg-gray-100
         flex
@@ -42,10 +45,19 @@ export default function CategoryCard({
         group-hover:bg-[#0B2C6B]
         "
             >
-                <Icon
-                    size={24}
-                    className="text-[#0B2C6B] group-hover:text-white"
-                />
+                {iconUrl ? (
+                    <Image
+                        src={iconUrl}
+                        alt={title}
+                        fill
+                        className="object-contain p-2"
+                    />
+                ) : (
+                    <Boxes
+                        size={24}
+                        className="text-[#0B2C6B] group-hover:text-white"
+                    />
+                )}
             </div>
 
             <p className="mt-4 text-sm font-medium text-[#222]">

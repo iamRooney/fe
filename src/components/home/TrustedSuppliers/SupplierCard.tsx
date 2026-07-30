@@ -19,12 +19,18 @@ export default function SupplierCard({ supplier }: Props) {
       <div className="flex items-start justify-between">
         <div className="flex gap-4">
           <div className="relative h-14 w-14 overflow-hidden rounded-lg border bg-gray-50">
-            <Image
-              src={supplier.logo}
-              alt={supplier.company}
-              fill
-              className="object-contain "
-            />
+            {supplier.logo ? (
+              <Image
+                src={supplier.logo}
+                alt={supplier.company}
+                fill
+                className="object-contain "
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center text-gray-300">
+                <Building2 size={24} />
+              </div>
+            )}
           </div>
 
           <div>
@@ -32,16 +38,20 @@ export default function SupplierCard({ supplier }: Props) {
               {supplier.company}
             </h3>
 
-            <div className="mt-1 flex items-center gap-2 text-sm">
-              <span className="flex items-center text-yellow-500">
-                <Star size={14} fill="currentColor" />
-                {supplier.rating}
-              </span>
+            {supplier.rating !== undefined && (
+              <div className="mt-1 flex items-center gap-2 text-sm">
+                <span className="flex items-center text-yellow-500">
+                  <Star size={14} fill="currentColor" />
+                  {supplier.rating}
+                </span>
 
-              <span className="text-gray-400">
-                ({supplier.reviews})
-              </span>
-            </div>
+                {supplier.reviews !== undefined && (
+                  <span className="text-gray-400">
+                    ({supplier.reviews})
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
