@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 
 import OTPInput from "./OTPInput";
 import { UserRole } from "@/lib/types";
-import { sendOtp, verifyOtp } from "@/lib/api/auth";
-import { ApiError } from "@/lib/api/client";
-import { setAuth } from "@/lib/auth";
+import { apiRequest, ApiError } from "@/lib/api";
+import { setAuthSession, setPendingRole, StoredUser } from "@/lib/auth";
 
 interface Props {
     mode: "login" | "register";
@@ -43,13 +42,21 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
         setError("");
 
         try {
-            const otpValue = otp.join("");
-            const res = await verifyOtp(phone, otpValue);
+            const res = await apiRequest<{
+                success: boolean;
+                data: { user: StoredUser; token: string };
+            }>("/auth/verify-otp", {
+                method: "POST",
+                body: { phone, otp: otp.join("") },
+            });
+
             const { user, token } = res.data;
 
-            // Register picks a role up front; login discovers it (and whether
-            // the profile is even complete yet) from the account itself.
-            setAuth(token, mode === "register" ? role : user.role as UserRole | null);
+            setAuthSession(token, user);
+
+            if (mode === "register" && role) {
+                setPendingRole(role);
+            }
 
             if (!user.is_profile_completed) {
                 router.push("/auth/complete-profile");
@@ -57,22 +64,31 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
                 router.push("/dashboard");
             }
         } catch (err) {
-            setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+            setError(
+                err instanceof ApiError
+                    ? err.message
+                    : "Something went wrong. Please try again."
+            );
         } finally {
             setLoading(false);
         }
     };
 
     const handleResend = async () => {
-        setResending(true);
         setError("");
+        setResending(true);
 
         try {
-            await sendOtp(phone);
+            await apiRequest("/auth/send-otp", {
+                method: "POST",
+                body: { phone, mode },
+            });
             setTimer(30);
             setOtp(Array(OTP_LENGTH).fill(""));
         } catch (err) {
-            setError(err instanceof ApiError ? err.message : "Couldn't resend the code. Please try again.");
+            setError(
+                err instanceof ApiError ? err.message : "Couldn't resend OTP."
+            );
         } finally {
             setResending(false);
         }
@@ -124,7 +140,7 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
                     <button
                         onClick={handleResend}
                         disabled={resending}
-                        className="font-semibold text-blue-600 hover:underline disabled:cursor-not-allowed disabled:text-slate-400"
+                        className="font-semibold text-blue-600 hover:underline disabled:opacity-50"
                     >
                         {resending ? "Resending..." : "Resend OTP"}
                     </button>

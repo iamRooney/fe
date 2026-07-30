@@ -3,9 +3,7 @@
 import { ArrowLeft, ArrowRight, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-
-import { sendOtp } from "@/lib/api/auth";
-import { ApiError } from "@/lib/api/client";
+import { apiRequest, ApiError } from "@/lib/api";
 
 interface Props {
     mode: "login" | "register";
@@ -34,15 +32,18 @@ export default function PhoneStep({
         setError("");
 
         try {
-            // Note: send-otp does a firstOrCreate on the backend, so it always
-            // succeeds for both login and register — there's no separate
-            // "does this account exist" check yet. Once verify-otp responds
-            // we redirect based on the account's actual profile-completion
-            // state rather than the client-picked mode (see OTPStep).
-            await sendOtp(phone);
+            await apiRequest("/auth/send-otp", {
+                method: "POST",
+                body: { phone, mode },
+            });
+
             onProceed();
         } catch (err) {
-            setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+            setError(
+                err instanceof ApiError
+                    ? err.message
+                    : "Something went wrong. Please try again."
+            );
         } finally {
             setLoading(false);
         }
@@ -109,11 +110,11 @@ export default function PhoneStep({
                 disabled={!valid || loading}
                 onClick={handleProceed}
                 className={`mt-8 flex w-full items-center justify-center gap-2 rounded-2xl py-4 font-semibold transition-all duration-300 ${valid && !loading
-                        ? "bg-blue-600 text-white hover:bg-blue-700"
-                        : "cursor-not-allowed bg-slate-200 text-slate-400"
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "cursor-not-allowed bg-slate-200 text-slate-400"
                     }`}
             >
-                {loading ? "Checking..." : mode === "register" ? "Proceed" : "Continue"}
+                {loading ? "Sending OTP..." : mode === "register" ? "Proceed" : "Continue"}
                 <ArrowRight size={18} />
             </button>
 

@@ -9,6 +9,7 @@ import {
     ChevronDown,
     Check,
 } from "lucide-react";
+import { apiRequest, ApiError } from "@/lib/api";
 
 const businessTypes = [
     {
@@ -33,24 +34,85 @@ const businessTypes = [
     },
 ];
 
-const categories = [
-    "Industrial Machinery",
-    "Construction",
-    "Electrical",
-    "Electronics",
-    "Automobile",
-    "Packaging",
-    "Agriculture",
-    "Healthcare",
-    "Food Processing",
-    "Chemicals",
-    "Other",
-];
+interface Country {
+    id: number;
+    name: string;
+    code: string;
+}
 
-export default function BusinessType() {
+interface State {
+    id: number;
+    name: string;
+    country_id: number;
+}
+
+interface City {
+    id: number;
+    name: string;
+    state_id: number;
+}
+
+export interface BusinessTypeValue {
+    name: string;
+    companyName: string;
+    businessEmail: string;
+    countryId: number | null;
+    stateId: number | null;
+    cityId: number | null;
+}
+
+interface Props {
+    value: BusinessTypeValue;
+    onChange: (value: BusinessTypeValue) => void;
+}
+
+export default function BusinessType({ value, onChange }: Props) {
     const [selectedType, setSelectedType] = useState("");
-    const [category, setCategory] = useState("");
-    const [otherCategory, setOtherCategory] = useState("");
+
+    const [countries, setCountries] = useState<Country[]>([]);
+    const [states, setStates] = useState<State[]>([]);
+    const [cities, setCities] = useState<City[]>([]);
+    const [locationsError, setLocationsError] = useState("");
+
+    useEffect(() => {
+        let cancelled = false;
+
+        async function loadLocations() {
+            try {
+                const [countryRes, stateRes, cityRes] = await Promise.all([
+                    apiRequest<Country[]>("/countries"),
+                    apiRequest<State[]>("/states"),
+                    apiRequest<City[]>("/cities"),
+                ]);
+
+                if (cancelled) return;
+
+                setCountries(countryRes);
+                setStates(stateRes);
+                setCities(cityRes);
+            } catch (err) {
+                if (cancelled) return;
+                setLocationsError(
+                    err instanceof ApiError
+                        ? err.message
+                        : "Couldn't load countries/states/cities."
+                );
+            }
+        }
+
+        loadLocations();
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
+    const statesForCountry = states.filter(
+        (s) => s.country_id === value.countryId
+    );
+    const citiesForState = cities.filter((c) => c.state_id === value.stateId);
+
+    const update = (patch: Partial<BusinessTypeValue>) =>
+        onChange({ ...value, ...patch });
 
     return (
         <div className="space-y-10">
@@ -121,65 +183,63 @@ export default function BusinessType() {
                     Company Details
                 </h3>
 
+                <p className="mt-1 text-sm text-slate-500">
+                    Tell us about you and your business.
+                </p>
+
+                {locationsError && (
+                    <p className="mt-2 text-sm font-medium text-red-500">
+                        {locationsError}
+                    </p>
+                )}
+
                 <div className="mt-6 grid gap-6 md:grid-cols-2 text-gray-500">
+
+                    <Field
+                        label="Your Name"
+                        placeholder="e.g. Arjun Menon"
+                        value={value.name}
+                        onChange={(v) => update({ name: v })}
+                    />
 
                     <Field
                         label="Company Name"
                         placeholder="ABC Industries"
+                        value={value.companyName}
+                        onChange={(v) => update({ companyName: v })}
                     />
 
                     <Field
                         label="Business Email"
                         type="email"
                         placeholder="info@company.com"
+                        value={value.businessEmail}
+                        onChange={(v) => update({ businessEmail: v })}
                     />
 
-                    <div className={category === "Other" ? "md:col-span-2 grid gap-6 md:grid-cols-2" : ""}>
-
-                        <SelectField
-                            label="Industry Category"
-                            options={categories}
-                            value={category}
-                            onChange={(value) => {
-                                setCategory(value);
-                                if (value !== "Other") setOtherCategory("");
-                            }}
-                        />
-
-                        {category === "Other" && (
-                            <Field
-                                label="Please specify"
-                                placeholder="Describe your industry"
-                                value={otherCategory}
-                                onChange={setOtherCategory}
-                            />
-                        )}
-
-                    </div>
-
-                    <Field
-                        label="GST Number"
-                        placeholder="32ABCDE1234F1Z5"
-                    />
-
-                    <Field
+                    <SelectField
                         label="Country"
-                        placeholder="India"
+                        options={countries.map((c) => ({ id: c.id, label: c.name }))}
+                        value={value.countryId}
+                        onChange={(id) =>
+                            update({ countryId: id, stateId: null, cityId: null })
+                        }
                     />
 
-                    <Field
+                    <SelectField
                         label="State"
-                        placeholder="Kerala"
+                        options={statesForCountry.map((s) => ({ id: s.id, label: s.name }))}
+                        value={value.stateId}
+                        onChange={(id) => update({ stateId: id, cityId: null })}
+                        disabled={!value.countryId}
                     />
 
-                    <Field
+                    <SelectField
                         label="City"
-                        placeholder="Thrissur"
-                    />
-
-                    <Field
-                        label="Website"
-                        placeholder="https://company.com"
+                        options={citiesForState.map((c) => ({ id: c.id, label: c.name }))}
+                        value={value.cityId}
+                        onChange={(id) => update({ cityId: id })}
+                        disabled={!value.stateId}
                     />
 
                 </div>
@@ -224,11 +284,17 @@ function Field({
     );
 }
 
+interface SelectOption {
+    id: number;
+    label: string;
+}
+
 interface SelectProps {
     label: string;
-    options: string[];
-    value: string;
-    onChange: (value: string) => void;
+    options: SelectOption[];
+    value: number | null;
+    onChange: (id: number | null) => void;
+    disabled?: boolean;
 }
 
 function SelectField({
@@ -236,6 +302,7 @@ function SelectField({
     options,
     value,
     onChange,
+    disabled,
 }: SelectProps) {
     const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -255,6 +322,8 @@ function SelectField({
             document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    const selected = options.find((o) => o.id === value);
+
     return (
         <div ref={containerRef} className="relative">
 
@@ -264,15 +333,16 @@ function SelectField({
 
             <button
                 type="button"
+                disabled={disabled}
                 onClick={() => setOpen((prev) => !prev)}
                 className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left outline-none transition ${open
                     ? "border-blue-600 ring-4 ring-blue-100"
                     : "border-slate-300 hover:border-blue-300"
-                    }`}
+                    } ${disabled ? "cursor-not-allowed bg-slate-50 opacity-60" : ""}`}
             >
 
-                <span className={value ? "text-slate-900" : "text-slate-400"}>
-                    {value || "Select Category"}
+                <span className={selected ? "text-slate-900" : "text-slate-400"}>
+                    {selected?.label ?? `Select ${label}`}
                 </span>
 
                 <ChevronDown
@@ -283,20 +353,26 @@ function SelectField({
 
             </button>
 
-            {open && (
+            {open && !disabled && (
                 <div className="absolute z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-2xl border border-slate-200 bg-white p-1.5 shadow-lg">
+
+                    {options.length === 0 && (
+                        <p className="px-3 py-2.5 text-sm text-slate-400">
+                            No options available
+                        </p>
+                    )}
 
                     {options.map((option) => {
 
-                        const active = option === value;
+                        const active = option.id === value;
 
                         return (
 
                             <button
-                                key={option}
+                                key={option.id}
                                 type="button"
                                 onClick={() => {
-                                    onChange(option);
+                                    onChange(option.id);
                                     setOpen(false);
                                 }}
                                 className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition ${active
@@ -305,7 +381,7 @@ function SelectField({
                                     }`}
                             >
 
-                                {option}
+                                {option.label}
 
                                 {active && <Check size={16} />}
 

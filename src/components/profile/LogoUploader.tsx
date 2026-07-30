@@ -1,35 +1,44 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { Camera, Upload, Trash2 } from "lucide-react";
 
-export default function LogoUploader() {
+interface Props {
+    file: File | null;
+    onChange: (file: File | null) => void;
+}
+
+export default function LogoUploader({ file, onChange }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [preview, setPreview] = useState<string | null>(null);
 
-    const handleFile = (file: File) => {
-        if (!file) return;
+    useEffect(() => {
+        if (!file) {
+            setPreview(null);
+            return;
+        }
 
         const reader = new FileReader();
-
-        reader.onload = () => {
-            setPreview(reader.result as string);
-        };
-
+        reader.onload = () => setPreview(reader.result as string);
         reader.readAsDataURL(file);
+    }, [file]);
+
+    const handleFile = (selected: File) => {
+        if (!selected) return;
+        onChange(selected);
     };
 
     return (
         <div>
 
             <h3 className="text-lg font-semibold text-slate-900">
-                Company Logo
+                Profile Picture
             </h3>
 
             <p className="mt-1 text-sm text-slate-500">
-                Upload your company logo.
+                Upload a photo so buyers and suppliers recognize you.
             </p>
 
             <div className="mt-6 flex flex-col items-center">
@@ -41,7 +50,7 @@ export default function LogoUploader() {
                     {preview ? (
                         <Image
                             src={preview}
-                            alt="Company Logo"
+                            alt="Profile Picture"
                             fill
                             className="object-cover"
                         />
@@ -67,21 +76,24 @@ export default function LogoUploader() {
                     type="file"
                     accept="image/*"
                     onChange={(e) => {
-                        const file = e.target.files?.[0];
+                        const selected = e.target.files?.[0];
 
-                        if (file) {
-                            handleFile(file);
+                        if (selected) {
+                            handleFile(selected);
                         }
                     }}
                 />
 
                 {preview ? (
                     <button
-                        onClick={() => setPreview(null)}
+                        onClick={() => {
+                            onChange(null);
+                            if (inputRef.current) inputRef.current.value = "";
+                        }}
                         className="mt-5 flex items-center gap-2 rounded-xl border border-red-200 px-5 py-2 text-red-600 hover:bg-red-50"
                     >
                         <Trash2 size={18} />
-                        Remove Logo
+                        Remove Photo
                     </button>
                 ) : (
                     <button

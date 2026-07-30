@@ -24,7 +24,12 @@ export default function CategoryPage() {
                 <Container>
 
                     {/* Breadcrumb */}
-                    <Breadcrumb />
+                    <Breadcrumb
+                        items={[
+                            { label: "Home", href: "/" },
+                            { label: "Categories" },
+                        ]}
+                    />
 
                     {/* Nearby Cities */}
                     <CityBar />

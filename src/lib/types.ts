@@ -8,32 +8,6 @@ export interface User {
     avatar: string;
 }
 
-/** Shape of the `data.user` object returned by the Laravel API (see be/app/Models/User.php). */
-export interface ApiUser {
-    id: number;
-    name: string;
-    phone: string;
-    email: string | null;
-    role: "buyer" | "seller" | "admin" | "super_admin" | null;
-    is_profile_completed: boolean;
-    profile_image: string | null;
-    status: boolean;
-    created_at: string;
-    updated_at: string;
-}
-
-/** Shape of a category row from GET /api/categories (be/app/Models/Category.php). */
-export interface ApiCategory {
-    id: number;
-    name: string;
-    slug: string;
-    icon: string | null;
-    description: string | null;
-    status: boolean;
-    created_at: string;
-    updated_at: string;
-}
-
 export interface Product {
     id: string;
     name: string;
@@ -66,14 +40,6 @@ export interface RecentlyViewedItem {
     name: string;
     supplierName: string;
     viewedAt: string;
-}
-
-export interface RecommendedProduct {
-    id: string;
-    name: string;
-    supplierName: string;
-    priceRange: string;
-    image: string;
 }
 
 export interface CategorySuggestion {
