@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import Container from "@/components/ui/Container";
 import CategoryCard from "@/components/cards/CategoryCard";
 import { fetchCategories, ApiCategory } from "@/lib/home";
@@ -37,29 +39,25 @@ export default function Categories() {
     }, []);
 
     return (
-        <section className="bg-white py-14">
+        <section className="bg-white py-16">
 
             <Container>
 
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
 
                     <div>
+
+                        <p className="mt-4 text-3xl font-bold text-[#1F2937]">
+                            Explore Popular Categories
+                        </p>
 
                         <p className="mt-2 text-gray-500">
                             Sourcing made easy across diverse industrial sectors.
                         </p>
 
-                        <p className="text-3xl font-bold text-gray-500">
-                            Explore Popular Categories
-                        </p>
-
-
-
                     </div>
 
-                    {/* <button className="rounded-full border px-5 py-2 hover:bg-gray-100 text-gray-500">
-                        View All →
-                    </button> */}
+
 
                 </div>
 
@@ -73,13 +71,41 @@ export default function Categories() {
 
                 <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-8">
 
-                    {categories.map((category) => (
+                    {categories.map((category, index) => (
                         <CategoryCard
                             key={category.id}
                             title={category.name}
                             iconUrl={category.icon_url}
+                            accent={index % 2 === 0 ? "navy" : "orange"}
                         />
                     ))}
+
+
+                    {/* <span
+                                className="
+                flex
+                h-12
+                w-12
+                items-center
+                justify-center
+                rounded-full
+                border
+                border-[#0D3B7A]/25
+                text-[#0D3B7A]
+                transition
+                group-hover:bg-[#0D3B7A]
+                group-hover:text-white
+                "
+                            >
+                                <ArrowRight size={18} />
+                            </span> */}
+
+                    {/* <span className="text-sm font-semibold text-[#0D3B7A]">
+                                View all categories
+                            </span> */}
+                    {/* </Link>
+                    )} */}
+
                 </div>
 
             </Container>
