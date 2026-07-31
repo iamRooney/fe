@@ -3,6 +3,19 @@
 export const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
 
+export const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "");
+
+/**
+ * Service (unlike Product/Company) doesn't append a full `image_url` on the
+ * backend — it only returns the raw stored path. Resolve it to an absolute
+ * URL here so <Image> can render it.
+ */
+export function resolveStorageUrl(path?: string | null): string | null {
+    if (!path) return null;
+    if (/^https?:\/\//i.test(path)) return path;
+    return `${API_ORIGIN}/storage/${path.replace(/^\/+/, "")}`;
+}
+
 export class ApiError extends Error {
     status: number;
     body: unknown;
@@ -76,19 +89,19 @@ export async function apiRequest<T>(
     if (!res.ok) {
         const message =
             data &&
-            typeof data === "object" &&
-            "message" in data &&
-            typeof (data as { message?: unknown }).message === "string"
+                typeof data === "object" &&
+                "message" in data &&
+                typeof (data as { message?: unknown }).message === "string"
                 ? (data as { message: string }).message
                 : `Request failed (${res.status})`;
 
         // Laravel validation errors: { errors: { field: [msg, ...] } }
         const firstValidationError =
             data &&
-            typeof data === "object" &&
-            "errors" in data &&
-            data.errors &&
-            typeof data.errors === "object"
+                typeof data === "object" &&
+                "errors" in data &&
+                data.errors &&
+                typeof data.errors === "object"
                 ? Object.values(data.errors as Record<string, string[]>)[0]?.[0]
                 : undefined;
 

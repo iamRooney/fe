@@ -1,9 +1,29 @@
+"use client";
+
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Container from "@/components/ui/Container";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Search, ChevronDown } from "lucide-react";
+import { Search } from "lucide-react";
+import LocationPicker from "./LocationPicker";
 
 export default function Header() {
+    const router = useRouter();
+    const [query, setQuery] = useState("");
+    const [location, setLocation] = useState("");
+
+    function handleSearch(e: FormEvent) {
+        e.preventDefault();
+
+        const params = new URLSearchParams();
+        if (query.trim()) params.set("q", query.trim());
+        if (location.trim()) params.set("location", location.trim());
+
+        const qs = params.toString();
+        router.push(qs ? `/search?${qs}` : "/search");
+    }
+
     return (
         <header className="bg-white border-b border-gray-200">
             <Container>
@@ -31,39 +51,31 @@ export default function Header() {
                     {/* Search Bar */}
                     <div className="flex flex-1 items-center">
 
-                        <div className="flex h-[48px] w-full overflow-hidden rounded-xl border border-gray-300 bg-white">
+                        <form
+                            onSubmit={handleSearch}
+                            className="flex h-[48px] w-full overflow-hidden rounded-xl border border-gray-300 bg-white"
+                        >
 
-                            {/* Products */}
+                            {/* Location (area search) */}
 
-                            <button className="hidden w-[130px] items-center justify-center gap-2 border-r border-gray-300 text-[15px] font-medium text-gray-700 hover:bg-gray-50 md:flex">
-
-                                Products
-
-                                <ChevronDown size={16} />
-
-                            </button>
-
-                            {/* Location */}
-
-                            <button className="hidden w-[150px] items-center justify-center gap-2 border-r border-gray-300 text-[15px] font-medium text-gray-700 hover:bg-gray-50 md:flex">
-
-                                <MapPin size={17} />
-
-                                Location
-
-                            </button>
+                            <LocationPicker value={location} onChange={setLocation} />
 
                             {/* Search */}
 
                             <input
                                 type="text"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
                                 placeholder="Search for Products, Services or Companies..."
                                 className="min-w-0 flex-1 px-4 text-[15px] placeholder:text-gray-400 focus:outline-none text-gray-500 sm:px-6"
                             />
 
                             {/* Search Button */}
 
-                            <button className="flex w-[56px] shrink-0 items-center justify-center gap-2 bg-[#F89A1C] font-medium text-white transition hover:bg-[#e88910] sm:w-[170px]">
+                            <button
+                                type="submit"
+                                className="flex w-[56px] shrink-0 items-center justify-center gap-2 bg-[#F89A1C] font-medium text-white transition hover:bg-[#e88910] sm:w-[170px]"
+                            >
 
                                 <Search size={18} />
 
@@ -71,7 +83,7 @@ export default function Header() {
 
                             </button>
 
-                        </div>
+                        </form>
 
                     </div>
 
