@@ -16,7 +16,7 @@ interface Props {
     onBack: () => void;
 }
 
-const OTP_LENGTH = 6;
+const OTP_LENGTH = 4;
 
 export default function OTPStep({ mode, phone, role, onBack }: Props) {
     const router = useRouter();

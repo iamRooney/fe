@@ -11,6 +11,8 @@ import MyEnquiries from "./buyer/Enquiries";
 import PostRFQ from "./buyer/PostRFQ";
 import SavedSuppliers from "./buyer/Saved";
 import RecentlyViewed from "./buyer/Recently";
+import AddProduct from "./seller/AddProduct";
+import MyProducts from "./seller/MyProducts";
 
 export default function DashboardShell() {
     const router = useRouter();
@@ -40,6 +42,8 @@ export default function DashboardShell() {
         if (activeSection === "post-rfq") return <PostRFQ />;
         if (activeSection === "saved") return <SavedSuppliers />;
         if (activeSection === "recent") return <RecentlyViewed />;
+        if (activeSection === "add-product") return <AddProduct />;
+        if (activeSection === "products") return <MyProducts />;
         const item = navItems.find((n) => n.id === activeSection);
         return <PlaceholderSection title={item?.label ?? ""} />;
     }

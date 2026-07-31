@@ -21,8 +21,9 @@ export default function ProductCard({ product }: Props) {
                     <Image
                         src={product.image}
                         alt={product.name}
-                        fill
-                        className="object-contain p-5"
+                        width={300}
+                        height={300}
+                        unoptimized
                     />
                 </div>
             </div>
