@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Container from "@/components/ui/Container";
 import {
     Cpu,
@@ -28,13 +29,14 @@ export default function CategoryNavbar() {
                     <div className="scrollbar-hide flex h-full w-full items-center gap-6 overflow-x-auto sm:gap-10">
 
                         {categories.map(({ icon: Icon, label }) => (
-                            <button
+                            <Link
                                 key={label}
+                                href={`/search?q=${encodeURIComponent(label)}`}
                                 className="flex shrink-0 items-center gap-2 whitespace-nowrap text-sm hover:text-orange-400 transition"
                             >
                                 <Icon size={16} />
                                 {label}
-                            </button>
+                            </Link>
                         ))}
 
                     </div>

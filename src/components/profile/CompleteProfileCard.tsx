@@ -64,7 +64,7 @@ export default function CompleteProfileCard() {
                     </div>
 
                     <div className="mt-8 sm:mt-10">
-                        <LogoUploader file={profileImage} onChange={setProfileImage} />
+                        <LogoUploader file={profileImage} onChange={setProfileImage} isSeller={isSeller} />
                     </div>
 
                     {!isSeller && (

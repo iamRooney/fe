@@ -2,14 +2,15 @@
 
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { Camera, Upload, Trash2 } from "lucide-react";
+import { Camera, Upload, Trash2, Building2 } from "lucide-react";
 
 interface Props {
     file: File | null;
     onChange: (file: File | null) => void;
+    isSeller?: boolean;
 }
 
-export default function LogoUploader({ file, onChange }: Props) {
+export default function LogoUploader({ file, onChange, isSeller = false }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [preview, setPreview] = useState<string | null>(null);
@@ -34,33 +35,44 @@ export default function LogoUploader({ file, onChange }: Props) {
         <div>
 
             <h3 className="text-lg font-semibold text-slate-900">
-                Profile Picture
+                {isSeller ? "Company Logo" : "Profile Picture"}
             </h3>
 
             <p className="mt-1 text-sm text-slate-500">
-                Upload a photo so buyers and suppliers recognize you.
+                {isSeller
+                    ? "Upload your company logo so buyers recognize your business."
+                    : "Upload a photo so buyers and suppliers recognize you."}
             </p>
 
             <div className="mt-6 flex flex-col items-center">
 
                 <div
                     onClick={() => inputRef.current?.click()}
-                    className="group relative flex h-36 w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-slate-300 bg-slate-50 transition hover:border-blue-600 hover:bg-blue-50"
+                    className={`group relative flex h-36 w-36 cursor-pointer items-center justify-center overflow-hidden border-2 border-dashed border-slate-300 bg-slate-50 transition hover:border-blue-600 hover:bg-blue-50 ${isSeller ? "rounded-2xl" : "rounded-full"
+                        }`}
                 >
                     {preview ? (
                         <Image
                             src={preview}
-                            alt="Profile Picture"
+                            alt={isSeller ? "Company Logo" : "Profile Picture"}
                             fill
+                            unoptimized
                             className="object-cover"
                         />
                     ) : (
                         <div className="text-center">
 
-                            <Camera
-                                className="mx-auto text-slate-400 group-hover:text-blue-600"
-                                size={34}
-                            />
+                            {isSeller ? (
+                                <Building2
+                                    className="mx-auto text-slate-400 group-hover:text-blue-600"
+                                    size={34}
+                                />
+                            ) : (
+                                <Camera
+                                    className="mx-auto text-slate-400 group-hover:text-blue-600"
+                                    size={34}
+                                />
+                            )}
 
                             <p className="mt-2 text-sm font-medium text-slate-600">
                                 Upload

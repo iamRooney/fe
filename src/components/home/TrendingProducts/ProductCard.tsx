@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { Product } from "./types";
 import { BadgeCheck, ImageOff } from "lucide-react";
@@ -7,14 +10,20 @@ interface Props {
 }
 
 export default function ProductCard({ product }: Props) {
+    // Falls back to the placeholder if the image URL 404s (e.g. backend
+    // storage symlink missing) instead of showing a broken image icon.
+    const [imgError, setImgError] = useState(false);
+
     return (
         <div className="group overflow-hidden rounded-xl border bg-white transition hover:-translate-y-1 hover:shadow-xl">
             <div className="relative h-44 overflow-hidden bg-gray-50">
-                {product.image ? (
+                {product.image && !imgError ? (
                     <Image
                         src={product.image}
                         alt={product.name}
                         fill
+                        unoptimized
+                        onError={() => setImgError(true)}
                         className="object-cover transition duration-300 group-hover:scale-105"
                     />
                 ) : (

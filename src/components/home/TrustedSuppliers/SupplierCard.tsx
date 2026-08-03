@@ -24,6 +24,7 @@ export default function SupplierCard({ supplier }: Props) {
                 src={supplier.logo}
                 alt={supplier.company}
                 fill
+                unoptimized
                 className="object-contain "
               />
             ) : (
