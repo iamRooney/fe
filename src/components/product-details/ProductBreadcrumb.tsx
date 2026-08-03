@@ -5,10 +5,15 @@ interface ProductBreadcrumbProps {
   product: {
     name: string;
   };
+  category?: {
+    name: string;
+    slug: string;
+  } | null;
 }
 
 export default function ProductBreadcrumb({
   product,
+  category,
 }: ProductBreadcrumbProps) {
   return (
     <nav
@@ -25,18 +30,25 @@ export default function ProductBreadcrumb({
         <ChevronRight size={16} className="text-gray-400" />
 
         <li>
-          <Link href="/products" className="text-gray-500 hover:text-blue-600">
-            Electronics
+          <Link href="/search" className="text-gray-500 hover:text-blue-600">
+            Products
           </Link>
         </li>
 
-        <ChevronRight size={16} className="text-gray-400" />
+        {category && (
+          <>
+            <ChevronRight size={16} className="text-gray-400" />
 
-        <li>
-          <Link href="/products" className="text-gray-500 hover:text-blue-600">
-            Development Boards
-          </Link>
-        </li>
+            <li>
+              <Link
+                href={`/search?q=${encodeURIComponent(category.name)}`}
+                className="text-gray-500 hover:text-blue-600"
+              >
+                {category.name}
+              </Link>
+            </li>
+          </>
+        )}
 
         <ChevronRight size={16} className="text-gray-400" />
 

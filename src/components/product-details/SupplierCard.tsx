@@ -1,37 +1,67 @@
+import Link from "next/link";
 import { MapPin, BadgeCheck } from "lucide-react";
 
-export default function SupplierCard() {
+interface SupplierCardProps {
+  name: string;
+  slug: string;
+  verified: boolean;
+  location: string;
+  yearsInBusiness: number | null;
+  responseRate: number | null;
+  annualTurnover: string | null;
+  staffCount: number | null;
+}
+
+export default function SupplierCard({
+  name,
+  slug,
+  verified,
+  location,
+  yearsInBusiness,
+  responseRate,
+  annualTurnover,
+  staffCount,
+}: SupplierCardProps) {
   return (
     <div className="rounded-xl border bg-white p-6">
       {/* Header */}
       <div className="flex items-start justify-between">
-        <h2 className="text-2xl font-semibold text-gray-500">
-          Sana Technos
-        </h2>
+        <Link
+          href={`/suppliers/${slug}`}
+          className="text-2xl font-semibold text-gray-700 hover:text-blue-600"
+        >
+          {name}
+        </Link>
 
-        <span className="flex items-center gap-1 rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
-          <BadgeCheck size={14} />
-          Verified Seller
-        </span>
+        {verified && (
+          <span className="flex items-center gap-1 rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+            <BadgeCheck size={14} />
+            Verified Seller
+          </span>
+        )}
       </div>
 
       {/* Location */}
       <div className="mt-4 flex items-center gap-2 text-gray-500">
         <MapPin size={18} />
-        <span>New Delhi, India</span>
+        <span>{location}</span>
       </div>
 
       {/* Stats */}
       <div className="mt-6 grid grid-cols-2 gap-4">
         <div className="rounded-lg bg-gray-50 p-5 text-center">
-          <h3 className="text-2xl font-bold text-blue-700">14</h3>
+          <h3 className="text-2xl font-bold text-blue-700">
+            {yearsInBusiness ?? "—"}
+          </h3>
           <p className="mt-2 text-sm text-gray-500">
             Years in Business
           </p>
         </div>
 
         <div className="rounded-lg bg-gray-50 p-5 text-center">
-          <h3 className="text-2xl font-bold text-blue-700">95%</h3>
+          <h3 className="text-2xl font-bold text-blue-700">
+            {responseRate !== null ? `${responseRate}%` : "—"}
+          </h3>
           <p className="mt-2 text-sm text-gray-500">
             Response Rate
           </p>
@@ -49,7 +79,7 @@ export default function SupplierCard() {
           </span>
 
           <span className="font-semibold text-gray-500">
-            ₹50L - ₹1Cr
+            {annualTurnover ?? "Not disclosed"}
           </span>
         </div>
 
@@ -59,7 +89,7 @@ export default function SupplierCard() {
           </span>
 
           <span className="font-semibold text-gray-500">
-            25 - 50 People
+            {staffCount ?? "Not disclosed"}
           </span>
         </div>
       </div>

@@ -51,17 +51,32 @@ export interface ApiProduct {
     category: { id: number; name: string; slug: string } | null;
 }
 
+// Extra fields only present on the single-product (show) response, not the
+// list — description/gallery/views aren't needed for cards, just detail pages.
+export interface ApiProductDetail extends ApiProduct {
+    description: string | null;
+    gallery_urls: string[];
+    views: number;
+}
+
 export function fetchCategories() {
     return apiRequest<ApiCategory[]>("/categories");
 }
 
-export function fetchProducts(params: { featured?: boolean; limit?: number } = {}) {
+export function fetchProducts(
+    params: { featured?: boolean; limit?: number; category?: string } = {}
+) {
     const query = new URLSearchParams();
     if (params.featured) query.set("featured", "1");
     if (params.limit) query.set("limit", String(params.limit));
+    if (params.category) query.set("category", params.category);
 
     const qs = query.toString();
     return apiRequest<ApiProduct[]>(`/products${qs ? `?${qs}` : ""}`);
+}
+
+export function fetchProductBySlug(slug: string) {
+    return apiRequest<ApiProductDetail>(`/products/${slug}`);
 }
 
 export function fetchCompanies() {

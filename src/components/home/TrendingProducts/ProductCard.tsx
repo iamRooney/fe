@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Product } from "./types";
 import { BadgeCheck, ImageOff } from "lucide-react";
 
@@ -15,7 +16,10 @@ export default function ProductCard({ product }: Props) {
     const [imgError, setImgError] = useState(false);
 
     return (
-        <div className="group overflow-hidden rounded-xl border bg-white transition hover:-translate-y-1 hover:shadow-xl">
+        <Link
+            href={`/products/${product.slug}`}
+            className="group block overflow-hidden rounded-xl border bg-white transition hover:-translate-y-1 hover:shadow-xl"
+        >
             <div className="relative h-44 overflow-hidden bg-gray-50">
                 {product.image && !imgError ? (
                     <Image
@@ -58,10 +62,19 @@ export default function ProductCard({ product }: Props) {
                     </div>
                 )}
 
-                <button className="w-full rounded-lg border border-green-500 py-2 text-sm font-semibold text-green-600 transition hover:bg-green-500 hover:text-white">
+                <button
+                    type="button"
+                    onClick={(e) => {
+                        // "Get Quotes" doesn't have its own flow yet — stop it
+                        // from also triggering the card's navigation link.
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }}
+                    className="w-full rounded-lg border border-green-500 py-2 text-sm font-semibold text-green-600 transition hover:bg-green-500 hover:text-white"
+                >
                     Get Quotes
                 </button>
             </div>
-        </div>
+        </Link>
     );
 }

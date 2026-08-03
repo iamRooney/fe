@@ -15,6 +15,7 @@ import { ApiError } from "@/lib/api";
 function toHomeProduct(p: ApiProduct): Product {
     return {
         id: p.id,
+        slug: p.slug,
         name: p.name,
         image: p.image_url,
         supplier: p.company?.name ?? "Unknown Supplier",

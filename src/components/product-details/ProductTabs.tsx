@@ -9,7 +9,21 @@ const tabs = ["Description", "Specifications", "Shipping"] as const;
 
 type Tab = (typeof tabs)[number];
 
-export default function ProductTabs() {
+interface ProductTabsProps {
+  description: string | null;
+  price: string | null;
+  unit: string | null;
+  categoryName: string | null;
+  supplierLocation: string;
+}
+
+export default function ProductTabs({
+  description,
+  price,
+  unit,
+  categoryName,
+  supplierLocation,
+}: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState<Tab>("Description");
 
   return (
@@ -33,9 +47,15 @@ export default function ProductTabs() {
 
       {/* Content */}
       <div className="p-6">
-        {activeTab === "Description" && <DescriptionTab />}
-        {activeTab === "Specifications" && <SpecificationsTab />}
-        {activeTab === "Shipping" && <ShippingTab />}
+        {activeTab === "Description" && (
+          <DescriptionTab description={description} />
+        )}
+        {activeTab === "Specifications" && (
+          <SpecificationsTab price={price} unit={unit} categoryName={categoryName} />
+        )}
+        {activeTab === "Shipping" && (
+          <ShippingTab dispatchLocation={supplierLocation} />
+        )}
       </div>
     </div>
   );

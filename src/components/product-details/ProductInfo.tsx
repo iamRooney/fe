@@ -1,24 +1,41 @@
-import { Star, Mail, BadgeDollarSign } from "lucide-react";
+import { Eye, Mail, BadgeDollarSign } from "lucide-react";
 
-export default function ProductInfo() {
+interface ProductInfoProps {
+  name: string;
+  price: string | null;
+  unit: string | null;
+  shortDescription: string | null;
+  views: number;
+}
+
+export default function ProductInfo({
+  name,
+  price,
+  unit,
+  shortDescription,
+  views,
+}: ProductInfoProps) {
   return (
     <div className="rounded-xl border bg-white p-6">
       {/* Product Title */}
-      <h1 className="text-4xl font-bold text-gray-900">
-        Arduino Mega 2560 Electronic Development Board
-      </h1>
+      <h1 className="text-4xl font-bold text-gray-900">{name}</h1>
 
-      {/* Price & Rating */}
+      {shortDescription && (
+        <p className="mt-3 text-gray-600">{shortDescription}</p>
+      )}
+
+      {/* Price & Views */}
       <div className="mt-4 flex flex-wrap items-center gap-4">
         <div className="flex items-end gap-1">
-          <span className="text-3xl font-bold text-orange-600">₹300</span>
-          <span className="pb-1 text-gray-500">/ Piece</span>
+          <span className="text-3xl font-bold text-orange-600">
+            {price ? `₹${Number(price).toLocaleString()}` : "Contact for price"}
+          </span>
+          {price && unit && <span className="pb-1 text-gray-500">/ {unit}</span>}
         </div>
 
-        <div className="flex items-center gap-1 text-sm">
-          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-          <span className="font-medium">4.8</span>
-          <span className="text-gray-500">(124 Reviews)</span>
+        <div className="flex items-center gap-1 text-sm text-gray-500">
+          <Eye className="h-4 w-4" />
+          <span>{views.toLocaleString()} views</span>
         </div>
       </div>
 

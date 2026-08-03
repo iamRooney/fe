@@ -1,4 +1,8 @@
-export default function ShippingTab() {
+interface ShippingTabProps {
+  dispatchLocation: string;
+}
+
+export default function ShippingTab({ dispatchLocation }: ShippingTabProps) {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-semibold text-gray-500">
@@ -8,11 +12,11 @@ export default function ShippingTab() {
       <div className="grid grid-cols-2 gap-6">
         <div className="rounded-lg bg-gray-50 p-5">
           <h4 className="font-semibold text-gray-500">
-            Packaging
+            Ships From
           </h4>
 
           <p className="mt-2 text-gray-600">
-            Standard anti-static packaging.
+            {dispatchLocation}
           </p>
         </div>
 
@@ -22,27 +26,17 @@ export default function ShippingTab() {
           </h4>
 
           <p className="mt-2 text-gray-600">
-            3–5 Business Days
+            Contact supplier for lead time
           </p>
         </div>
 
-        <div className="rounded-lg bg-gray-50 p-5">
+        <div className="rounded-lg bg-gray-50 p-5 col-span-2">
           <h4 className="font-semibold text-gray-500">
             Shipping Method
           </h4>
 
           <p className="mt-2 text-gray-600">
-            Air, Road & Courier
-          </p>
-        </div>
-
-        <div className="rounded-lg bg-gray-50 p-5">
-          <h4 className="font-semibold text-gray-500">
-            Dispatch Port
-          </h4>
-
-          <p className="mt-2 text-gray-600">
-            New Delhi, India
+            Arranged with the supplier at the time of order.
           </p>
         </div>
       </div>
