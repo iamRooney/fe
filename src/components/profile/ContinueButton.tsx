@@ -52,6 +52,11 @@ export default function ContinueButton({ name, email, role, business, profileIma
                         country_id: String(business.countryId),
                         state_id: String(business.stateId),
                         city_id: String(business.cityId),
+                        website: business.website,
+                        gst_number: business.gstNumber,
+                        address: business.address,
+                        years_in_business: business.yearsInBusiness,
+                        description: business.description,
                     }
                     : {
                         name,

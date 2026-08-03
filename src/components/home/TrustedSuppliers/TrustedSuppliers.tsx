@@ -9,6 +9,7 @@ import { ApiError } from "@/lib/api";
 function toSupplier(c: ApiCompany): Supplier {
     return {
         id: c.id,
+        slug: c.slug,
         company: c.name,
         logo: c.logo_url,
         description: c.description ?? "No description provided yet.",

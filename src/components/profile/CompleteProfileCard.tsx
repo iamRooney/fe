@@ -22,6 +22,11 @@ export default function CompleteProfileCard() {
         countryId: null,
         stateId: null,
         cityId: null,
+        website: "",
+        gstNumber: "",
+        address: "",
+        yearsInBusiness: "",
+        description: "",
     });
     const [interests, setInterests] = useState<string[]>([]);
     const [profileImage, setProfileImage] = useState<File | null>(null);

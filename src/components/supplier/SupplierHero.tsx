@@ -53,6 +53,7 @@ export default function SupplierHero({
                             <Image
                                 src={supplier.logo}
                                 alt={supplier.name}
+                                unoptimized
                                 fill
                                 className="object-contain p-3"
                             />
@@ -107,9 +108,8 @@ export default function SupplierHero({
 
                             {/* Small Description */}
                             <p className="max-w-2xl text-sm leading-7 text-gray-600">
-                                Trusted manufacturer and supplier delivering quality industrial
-                                products across India with reliable service and competitive
-                                pricing.
+                                Explore quality products from trusted brands with reliable service,
+                                competitive pricing, and fast delivery across India.
                             </p>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   BadgeCheck,
   Star,
@@ -35,9 +36,12 @@ export default function SupplierCard({ supplier }: Props) {
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-500">
-              {supplier.company}
-            </h3>
+            <Link
+              href={`/suppliers/${supplier.slug}`}
+              className="font-semibold text-gray-500 hover:text-[#173F84] hover:underline"
+            >
+              <h3>{supplier.company}</h3>
+            </Link>
 
             {supplier.rating !== undefined && (
               <div className="mt-1 flex items-center gap-2 text-sm">
@@ -74,9 +78,12 @@ export default function SupplierCard({ supplier }: Props) {
 
       <div className="mt-6 flex items-center justify-between">
 
-        <button className="rounded-lg bg-[#173F84] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#0f2d62]">
+        <Link
+          href={`/suppliers/${supplier.slug}`}
+          className="rounded-lg bg-[#173F84] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#0f2d62]"
+        >
           Contact Supplier
-        </button>
+        </Link>
 
         <button className="rounded-lg border p-2 transition hover:bg-red-500">
           <Heart size={18} />

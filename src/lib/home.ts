@@ -8,6 +8,11 @@ export interface ApiCategory {
     icon_url: string | null;
 }
 
+export interface ApiLocationRef {
+    id: number;
+    name: string;
+}
+
 export interface ApiCompany {
     id: number;
     name: string;
@@ -15,6 +20,22 @@ export interface ApiCompany {
     description: string | null;
     logo_url: string | null;
     verified: boolean;
+
+    // Only present on the single-company (show) response, not the list.
+    email?: string;
+    phone?: string;
+    website?: string | null;
+    gst_number?: string | null;
+    address?: string | null;
+    years_in_business?: number;
+    annual_turnover?: string | null;
+    staff_count?: number;
+    response_rate?: number;
+    approved_products_count?: number;
+    created_at?: string;
+    country?: ApiLocationRef | null;
+    state?: ApiLocationRef | null;
+    city?: ApiLocationRef | null;
 }
 
 export interface ApiProduct {
@@ -45,4 +66,8 @@ export function fetchProducts(params: { featured?: boolean; limit?: number } = {
 
 export function fetchCompanies() {
     return apiRequest<ApiCompany[]>("/companies");
+}
+
+export function fetchCompanyBySlug(slug: string) {
+    return apiRequest<ApiCompany>(`/companies/${slug}`);
 }

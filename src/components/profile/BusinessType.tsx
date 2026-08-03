@@ -59,6 +59,11 @@ export interface BusinessTypeValue {
     countryId: number | null;
     stateId: number | null;
     cityId: number | null;
+    website: string;
+    gstNumber: string;
+    address: string;
+    yearsInBusiness: string;
+    description: string;
 }
 
 interface Props {
@@ -240,6 +245,51 @@ export default function BusinessType({ value, onChange }: Props) {
                         value={value.cityId}
                         onChange={(id) => update({ cityId: id })}
                         disabled={!value.stateId}
+                    />
+
+                    <Field
+                        label="Website"
+                        placeholder="https://www.company.com"
+                        value={value.website}
+                        onChange={(v) => update({ website: v })}
+                    />
+
+                    <Field
+                        label="GST Number"
+                        placeholder="22AAAAA0000A1Z5"
+                        value={value.gstNumber}
+                        onChange={(v) => update({ gstNumber: v })}
+                    />
+
+                    <Field
+                        label="Years in Business"
+                        type="number"
+                        placeholder="e.g. 5"
+                        value={value.yearsInBusiness}
+                        onChange={(v) => update({ yearsInBusiness: v })}
+                    />
+
+                    <Field
+                        label="Address"
+                        placeholder="Street, building, area"
+                        value={value.address}
+                        onChange={(v) => update({ address: v })}
+                    />
+
+                </div>
+
+                <div className="mt-6">
+
+                    <label className="mb-2 block text-sm font-medium text-slate-700">
+                        Company Description <span className="font-normal text-slate-400">(optional)</span>
+                    </label>
+
+                    <textarea
+                        rows={4}
+                        value={value.description}
+                        onChange={(e) => update({ description: e.target.value })}
+                        placeholder="Tell buyers what your company does..."
+                        className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-slate-700 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                     />
 
                 </div>

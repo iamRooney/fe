@@ -1,10 +1,14 @@
 // app/suppliers/[slug]/page.tsx
 
+import { notFound } from "next/navigation";
+
 import Breadcrumb from "@/components/category/layout/Breadcrumb";
 import SupplierHero from "@/components/supplier/SupplierHero";
 import SupplierAbout from "@/components/supplier/SupplierAbout";
 import SupplierQuickFacts from "@/components/supplier/SupplierQuickFacts";
 import SupplierSidebar from "@/components/supplier/SupplierSidebar";
+import { fetchCompanyBySlug } from "@/lib/home";
+import { ApiError } from "@/lib/api";
 
 interface SupplierPageProps {
     params: Promise<{
@@ -17,57 +21,57 @@ export default async function SupplierPage({
 }: SupplierPageProps) {
     const { slug } = await params;
 
-    // Temporary data
-    // Replace with Laravel API later
+    let company;
+    try {
+        company = await fetchCompanyBySlug(slug);
+    } catch (err) {
+        if (err instanceof ApiError && err.status === 404) {
+            notFound();
+        }
+        throw err;
+    }
+
+    const location = [company.city?.name, company.state?.name]
+        .filter(Boolean)
+        .join(", ") || "Location not provided";
+
+    // Backend fields the profile still doesn't have yet (rating, reviews,
+    // reply time, business type, named contact person) fall back to
+    // sensible placeholders below — see the note left in the PR/ticket.
     const supplier = {
-        id: 1,
-        slug,
-        name: "Exbhex Industries",
-        logo: "/images/exbhex.png",
+        id: company.id,
+        slug: company.slug,
+        name: company.name,
+        logo: company.logo_url ?? "/images/suppliers/supplier-1.jfif",
         banner: "/images/d.jfif",
-        verified: true,
-        rating: 4.8,
-        reviews: 126,
-        businessType: "Manufacturer",
-        location: "Kochi, Kerala",
-        memberSince: 2018,
+        verified: company.verified,
+        rating: 0,
+        reviews: 0,
+        businessType: "Supplier",
+        location,
+        memberSince: company.created_at
+            ? new Date(company.created_at).getFullYear()
+            : new Date().getFullYear(),
 
         about:
-            "Exbhex Industries is a trusted manufacturer and supplier of industrial products serving businesses across India. We focus on quality, reliability, and timely delivery.",
+            company.description ??
+            "This supplier hasn't added a company description yet.",
 
         quickFacts: [
-            {
-                label: "Established",
-                value: "2018",
-            },
-            {
-                label: "Employees",
-                value: "50+",
-            },
-            {
-                label: "GST",
-                value: "Verified",
-            },
-            {
-                label: "Response Rate",
-                value: "98%",
-            },
-            {
-                label: "Reply Time",
-                value: "15 mins",
-            },
-            {
-                label: "Location",
-                value: "Kochi, Kerala",
-            },
+            { label: "Location", value: location },
+            { label: "Established (years)", value: String(company.years_in_business ?? 0) },
+            // { label: "Employees", value: String(company.staff_count ?? 0) },
+            { label: "Response Rate", value: `${company.response_rate ?? 0}%` },
+            { label: "GST Number", value: company.gst_number ? "Verified" : "Not provided" },
+
         ],
 
         contact: {
-            person: "John Mathew",
-            phone: "+91 9876543210",
-            email: "info@exbhex.com",
-            website: "www.exbhex.com",
-            address: "Kochi, Kerala",
+            person: company.name,
+            phone: company.phone ?? "Not provided",
+            email: company.email ?? "Not provided",
+            website: company.website ?? "Not provided",
+            address: company.address ?? location,
         },
     };
 
