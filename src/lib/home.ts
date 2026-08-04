@@ -108,3 +108,73 @@ export function unsaveCompany(companyId: number) {
         { method: "DELETE", auth: true }
     );
 }
+
+// --- Enquiries (buyer dashboard) -----------------------------------------
+
+export type EnquiryStatus = "open" | "closed";
+export type EnquiryPriority = "low" | "medium" | "high";
+
+export interface ApiEnquiryRef {
+    id: number;
+    name: string;
+    slug: string;
+    logo_url?: string | null;
+    image_url?: string | null;
+}
+
+export interface ApiEnquiry {
+    id: number;
+    enquiry_number: string;
+    message: string;
+    status: EnquiryStatus;
+    priority: EnquiryPriority;
+    created_at: string;
+    company: ApiEnquiryRef | null;
+    product: ApiEnquiryRef | null;
+    service: ApiEnquiryRef | null;
+}
+
+export function fetchMyEnquiries() {
+    return apiRequest<{ success: boolean; data: ApiEnquiry[] }>(
+        "/enquiries",
+        { auth: true }
+    );
+}
+
+export interface CreateEnquiryPayload {
+    company_id: number;
+    product_id?: number;
+    service_id?: number;
+    message: string;
+    priority?: EnquiryPriority;
+}
+
+export function createEnquiry(payload: CreateEnquiryPayload) {
+    return apiRequest<{ success: boolean; message: string; data: ApiEnquiry }>(
+        "/enquiries",
+        { method: "POST", body: payload, auth: true }
+    );
+}
+
+// --- Recently viewed (buyer dashboard) ------------------------------------
+
+export interface ApiRecentlyViewedItem {
+    id: number;
+    viewed_at: string;
+    product: ApiProduct | null;
+}
+
+export function fetchRecentlyViewed() {
+    return apiRequest<{ success: boolean; data: ApiRecentlyViewedItem[] }>(
+        "/recently-viewed",
+        { auth: true }
+    );
+}
+
+/** Fire-and-forget: called from the product detail page for buyers only. */
+export function recordProductView(productId: number) {
+    return apiRequest<{ success: boolean }>(
+        "/recently-viewed",
+        { method: "POST", body: { product_id: productId }, auth: true }
+    );
+}

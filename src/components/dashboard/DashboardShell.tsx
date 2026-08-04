@@ -11,9 +11,9 @@ import DashboardOverview from "./DashboardOverview";
 import MessagesPage from "../messages/MessagePage";
 import PlaceholderSection from "./PlaceholderSection";
 import MyEnquiries from "./buyer/Enquiries";
-import PostRFQ from "./buyer/PostRFQ";
 import SavedSuppliers from "./buyer/Saved";
 import RecentlyViewed from "./buyer/Recently";
+import BuyerProfileEdit from "./buyer/ProfileEdit";
 import AddProduct from "./seller/AddProduct";
 import MyProducts from "./seller/MyProducts";
 
@@ -39,6 +39,13 @@ export default function DashboardShell() {
     const user = auth.user;
     const navItems = getNavItems(role);
 
+    // Buyer nav no longer has an "overview" tab, so fall back to the first
+    // available section (My Enquiries) instead of a blank/placeholder page.
+    const currentSection =
+        activeSection === "overview" && !navItems.some((n) => n.id === "overview")
+            ? navItems[0]?.id ?? activeSection
+            : activeSection;
+
     function handleLogout() {
         clearAuthSession();
         // Full navigation so every bit of auth-derived UI (this shell
@@ -47,15 +54,15 @@ export default function DashboardShell() {
     }
 
     function renderSection() {
-        if (activeSection === "overview") return <DashboardOverview role={role} />;
-        if (activeSection === "messages") return <MessagesPage />;
-        if (activeSection === "enquiries") return <MyEnquiries />;
-        if (activeSection === "post-rfq") return <PostRFQ />;
-        if (activeSection === "saved") return <SavedSuppliers />;
-        if (activeSection === "recent") return <RecentlyViewed />;
-        if (activeSection === "add-product") return <AddProduct />;
-        if (activeSection === "products") return <MyProducts />;
-        const item = navItems.find((n) => n.id === activeSection);
+        if (currentSection === "overview") return <DashboardOverview role={role} />;
+        if (currentSection === "messages") return <MessagesPage />;
+        if (currentSection === "enquiries") return <MyEnquiries />;
+        if (currentSection === "saved") return <SavedSuppliers />;
+        if (currentSection === "recent") return <RecentlyViewed />;
+        if (currentSection === "profile" && role === "buyer") return <BuyerProfileEdit />;
+        if (currentSection === "add-product") return <AddProduct />;
+        if (currentSection === "products") return <MyProducts />;
+        const item = navItems.find((n) => n.id === currentSection);
         return <PlaceholderSection title={item?.label ?? ""} />;
     }
 
@@ -80,7 +87,7 @@ export default function DashboardShell() {
                 <nav className="flex-1 space-y-1 p-3">
                     {navItems.map((item) => {
                         const Icon = item.icon;
-                        const isActive = activeSection === item.id;
+                        const isActive = currentSection === item.id;
                         return (
                             <button
                                 key={item.id}

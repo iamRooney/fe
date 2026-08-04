@@ -14,7 +14,7 @@ export default function RecentlyViewed() {
                         key={item.id}
                         className="rounded border border-gray-200 p-4 transition hover:shadow-md"
                     >
-                        <div className="relative mx-auto h-20 w-20">
+                        <div className="relative mx-auto h-200 w-20">
                             <Image
                                 src={item.image}
                                 alt={item.title}

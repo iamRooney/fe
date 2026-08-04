@@ -1,6 +1,6 @@
 import {
     LayoutDashboard, MessageSquare, Package, PlusCircle,
-    Building2, BarChart3, FileText, Send, Bookmark, History, LucideIcon,
+    Building2, BarChart3, FileText, Bookmark, History, User, LucideIcon,
 } from "lucide-react";
 
 import { UserRole } from "@/lib/types";
@@ -22,16 +22,20 @@ const sellerNavItems: NavItem[] = [
     { id: "analytics", label: "Analytics", icon: BarChart3 },
 ];
 
+// Buyer dashboard is intentionally kept to just these 5 sections
+// (no overview / discovery, no post-RFQ) — see DashboardShell.
 const buyerNavItems: NavItem[] = [
     { id: "enquiries", label: "My Enquiries", icon: FileText },
-    { id: "post-rfq", label: "Post an RFQ", icon: Send },
     { id: "saved", label: "Saved Suppliers", icon: Bookmark },
     { id: "recent", label: "Recently Viewed", icon: History },
 ];
 
 const messagesNavItem: NavItem = { id: "messages", label: "Messages", icon: MessageSquare };
+const buyerProfileNavItem: NavItem = { id: "profile", label: "Edit Profile", icon: User };
 
 export function getNavItems(role: UserRole): NavItem[] {
-    const roleItems = role === "seller" ? sellerNavItems : buyerNavItems;
-    return [...sharedNavItems, ...roleItems, messagesNavItem];
+    if (role === "buyer") {
+        return [...buyerNavItems, messagesNavItem, buyerProfileNavItem];
+    }
+    return [...sharedNavItems, ...sellerNavItems, messagesNavItem];
 }

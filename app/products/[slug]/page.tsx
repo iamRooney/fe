@@ -12,6 +12,7 @@ import {
     InquiryForm,
     ProductTabs,
     SimilarProducts,
+    ProductViewTracker,
 } from "@/components/product-details";
 import { fetchProductBySlug } from "@/lib/home";
 import { ApiError } from "@/lib/api";
@@ -49,6 +50,7 @@ export default async function ProductDetailsPage({
 
     return (
         <RequireAuth>
+            <ProductViewTracker productId={product.id} />
             <Header />
             <main className="bg-[#F5F7FA] min-h-screen py-6">
 
@@ -100,7 +102,9 @@ export default async function ProductDetailsPage({
                                 />
                             )}
 
-                            <InquiryForm />
+                            {company && (
+                                <InquiryForm companyId={company.id} productId={product.id} />
+                            )}
                         </div>
                     </div>
                 </Container>
