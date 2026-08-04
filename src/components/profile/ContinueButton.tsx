@@ -88,7 +88,7 @@ export default function ContinueButton({ name, email, role, business, profileIma
             updateStoredUser(res.data);
             clearPendingRole();
 
-            router.push("/dashboard");
+            router.push(role === "seller" ? "/dashboard" : "/");
         } catch (err) {
             setError(
                 err instanceof ApiError

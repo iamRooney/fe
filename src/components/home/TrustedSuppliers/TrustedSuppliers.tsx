@@ -3,8 +3,15 @@
 import { useEffect, useState } from "react";
 import SupplierCard from "./SupplierCard";
 import { Supplier } from "./types";
-import { fetchCompanies, ApiCompany } from "@/lib/home";
+import {
+    fetchCompanies,
+    fetchSavedCompanies,
+    saveCompany,
+    unsaveCompany,
+    ApiCompany,
+} from "@/lib/home";
 import { ApiError } from "@/lib/api";
+import { useAuth } from "@/hooks/useAuth";
 
 function toSupplier(c: ApiCompany): Supplier {
     return {
@@ -18,7 +25,11 @@ function toSupplier(c: ApiCompany): Supplier {
 }
 
 export default function TrustedSuppliers() {
+    const auth = useAuth();
+    const isBuyer = auth?.isAuthenticated && auth.role === "buyer";
+
     const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+    const [likedIds, setLikedIds] = useState<Set<number>>(new Set());
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
 
@@ -53,6 +64,55 @@ export default function TrustedSuppliers() {
             cancelled = true;
         };
     }, []);
+
+    // Only buyers can save suppliers, so only fetch their saved state once
+    // we know that's who's looking (guests/sellers never make this call).
+    useEffect(() => {
+        if (!isBuyer) return;
+
+        let cancelled = false;
+
+        fetchSavedCompanies()
+            .then((res) => {
+                if (!cancelled) {
+                    setLikedIds(new Set(res.data.map((c) => c.id)));
+                }
+            })
+            .catch(() => {
+                // Non-critical — hearts just stay unfilled if this fails.
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [isBuyer]);
+
+    async function toggleLike(companyId: number) {
+        const alreadyLiked = likedIds.has(companyId);
+
+        // Optimistic update, rolled back if the request fails.
+        setLikedIds((prev) => {
+            const next = new Set(prev);
+            if (alreadyLiked) next.delete(companyId);
+            else next.add(companyId);
+            return next;
+        });
+
+        try {
+            if (alreadyLiked) {
+                await unsaveCompany(companyId);
+            } else {
+                await saveCompany(companyId);
+            }
+        } catch {
+            setLikedIds((prev) => {
+                const next = new Set(prev);
+                if (alreadyLiked) next.add(companyId);
+                else next.delete(companyId);
+                return next;
+            });
+        }
+    }
 
     return (
         <section className="bg-white py-20">
@@ -90,6 +150,9 @@ export default function TrustedSuppliers() {
                         <SupplierCard
                             key={supplier.id}
                             supplier={supplier}
+                            showLike={Boolean(isBuyer)}
+                            liked={likedIds.has(supplier.id)}
+                            onToggleLike={() => toggleLike(supplier.id)}
                         />
                     ))}
 

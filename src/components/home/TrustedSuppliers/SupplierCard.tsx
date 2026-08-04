@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   BadgeCheck,
   Star,
-  Heart,
+  Bookmark,
   Building2,
 } from "lucide-react";
 
@@ -11,9 +11,13 @@ import { Supplier } from "./types";
 
 interface Props {
   supplier: Supplier;
+  /** Only buyers get the like/save button — sellers never see this page. */
+  showLike: boolean;
+  liked: boolean;
+  onToggleLike: () => void;
 }
 
-export default function SupplierCard({ supplier }: Props) {
+export default function SupplierCard({ supplier, showLike, liked, onToggleLike }: Props) {
   return (
     <div className="rounded-xl border bg-white p-6 transition hover:-translate-y-1 hover:shadow-xl">
       {/* Top */}
@@ -85,9 +89,20 @@ export default function SupplierCard({ supplier }: Props) {
           Contact Supplier
         </Link>
 
-        <button className="rounded-lg border p-2 transition hover:bg-red-500">
-          <Heart size={18} />
-        </button>
+        {showLike && (
+          <button
+            type="button"
+            onClick={onToggleLike}
+            aria-pressed={liked}
+            aria-label={liked ? "Remove from saved suppliers" : "Save supplier"}
+            className={`rounded-lg border p-2 transition ${liked
+              ? "border-red-500 bg-red-500 text-white"
+              : "text-gray-500 hover:bg-red-500 hover:text-white"
+              }`}
+          >
+            <Bookmark size={18} fill={liked ? "currentColor" : "none"} />
+          </button>
+        )}
       </div>
     </div>
   );

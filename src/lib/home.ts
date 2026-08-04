@@ -86,3 +86,25 @@ export function fetchCompanies() {
 export function fetchCompanyBySlug(slug: string) {
     return apiRequest<ApiCompany>(`/companies/${slug}`);
 }
+
+// Buyer-only "like a supplier" feature on the homepage.
+export function fetchSavedCompanies() {
+    return apiRequest<{ success: boolean; data: ApiCompany[] }>(
+        "/saved-companies",
+        { auth: true }
+    );
+}
+
+export function saveCompany(companyId: number) {
+    return apiRequest<{ success: boolean; message: string }>(
+        "/saved-companies",
+        { method: "POST", body: { company_id: companyId }, auth: true }
+    );
+}
+
+export function unsaveCompany(companyId: number) {
+    return apiRequest<{ success: boolean; message: string }>(
+        `/saved-companies/${companyId}`,
+        { method: "DELETE", auth: true }
+    );
+}

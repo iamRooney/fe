@@ -60,8 +60,10 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
 
             if (!user.is_profile_completed) {
                 router.push("/auth/complete-profile");
-            } else {
+            } else if (user.role === "seller") {
                 router.push("/dashboard");
+            } else {
+                router.push("/");
             }
         } catch (err) {
             setError(

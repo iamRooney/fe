@@ -1,8 +1,8 @@
 import Container from "@/components/ui/Container/";
 import { Globe, CircleHelp } from "lucide-react";
 import { MessageCircleMore } from 'lucide-react';
-import { LogIn } from 'lucide-react';
 import Link from "next/link";
+import AuthActions from "./AuthActions";
 
 export default function TopBar() {
     return (
@@ -35,19 +35,7 @@ export default function TopBar() {
                             <span className="hidden md:inline">Messages</span>
                         </Link>
 
-                        <Link
-                            href="/auth/login"
-                            className="font-medium hover:text-orange-400 transition"
-                        >
-                            Login
-                        </Link>
-
-                        <Link
-                            href="/auth/register"
-                            className="font-medium hover:text-orange-400 transition"
-                        >
-                            Register
-                        </Link>
+                        <AuthActions />
 
                     </div>
                 </div>

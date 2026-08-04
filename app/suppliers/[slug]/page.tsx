@@ -7,6 +7,7 @@ import SupplierHero from "@/components/supplier/SupplierHero";
 import SupplierAbout from "@/components/supplier/SupplierAbout";
 import SupplierQuickFacts from "@/components/supplier/SupplierQuickFacts";
 import SupplierSidebar from "@/components/supplier/SupplierSidebar";
+import RequireAuth from "@/components/auth/RequireAuth";
 import { fetchCompanyBySlug } from "@/lib/home";
 import { ApiError } from "@/lib/api";
 
@@ -76,42 +77,44 @@ export default async function SupplierPage({
     };
 
     return (
-        <main className="bg-gray-50">
-            <div className="mx-auto max-w-7xl px-6 py-6">
+        <RequireAuth>
+            <main className="bg-gray-50">
+                <div className="mx-auto max-w-7xl px-6 py-6">
 
-                <Breadcrumb
-                    items={[
-                        { label: "Home", href: "/" },
-                        { label: "Suppliers", href: "/suppliers" },
-                        { label: supplier.name },
-                    ]}
-                />
+                    <Breadcrumb
+                        items={[
+                            { label: "Home", href: "/" },
+                            { label: "Suppliers", href: "/suppliers" },
+                            { label: supplier.name },
+                        ]}
+                    />
 
-                <SupplierHero supplier={supplier} />
+                    <SupplierHero supplier={supplier} />
 
-                <div className="mt-10 grid gap-8 lg:grid-cols-12">
+                    <div className="mt-10 grid gap-8 lg:grid-cols-12">
 
-                    <div className="space-y-8 lg:col-span-8">
+                        <div className="space-y-8 lg:col-span-8">
 
-                        <SupplierAbout about={supplier.about} />
+                            <SupplierAbout about={supplier.about} />
 
-                        <SupplierQuickFacts
-                            facts={supplier.quickFacts}
-                        />
+                            <SupplierQuickFacts
+                                facts={supplier.quickFacts}
+                            />
+
+                        </div>
+
+                        <aside className="lg:col-span-4">
+
+                            <SupplierSidebar
+                                contact={supplier.contact}
+                            />
+
+                        </aside>
 
                     </div>
 
-                    <aside className="lg:col-span-4">
-
-                        <SupplierSidebar
-                            contact={supplier.contact}
-                        />
-
-                    </aside>
-
                 </div>
-
-            </div>
-        </main>
+            </main>
+        </RequireAuth>
     );
 }

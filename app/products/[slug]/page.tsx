@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/home/Footer/Footer";
+import RequireAuth from "@/components/auth/RequireAuth";
 import {
     ProductBreadcrumb,
     ProductGallery,
@@ -47,7 +48,7 @@ export default async function ProductDetailsPage({
     ) as string[];
 
     return (
-        <>
+        <RequireAuth>
             <Header />
             <main className="bg-[#F5F7FA] min-h-screen py-6">
 
@@ -105,6 +106,6 @@ export default async function ProductDetailsPage({
                 </Container>
             </main>
             <Footer />
-        </>
+        </RequireAuth>
     );
 }
