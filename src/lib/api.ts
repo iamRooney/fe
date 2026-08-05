@@ -63,6 +63,10 @@ export async function apiRequest<T>(
         res = await fetch(`${API_BASE_URL}${path}`, {
             method,
             headers,
+            // Never let the browser serve a cached response for API calls —
+            // status changes (e.g. a requirement being closed) must always
+            // be reflected on the next fetch, not a stale cached copy.
+            cache: "no-store",
             body:
                 body === undefined
                     ? undefined

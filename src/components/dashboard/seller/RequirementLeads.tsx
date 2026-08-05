@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { CheckCircle2, FileText, Loader2, Phone } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { CheckCircle2, FileText, Loader2, Phone, RefreshCw } from "lucide-react";
 import { fetchMyRequirements, acceptRequirement, ApiRequirement } from "@/lib/home";
 import { ApiError } from "@/lib/api";
 
@@ -24,30 +24,39 @@ export default function RequirementLeads() {
     const [taken, setTaken] = useState<Record<number, true>>({});
     const [acceptingId, setAcceptingId] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [error, setError] = useState("");
 
-    useEffect(() => {
-        let cancelled = false;
+    const load = useCallback((opts: { silent?: boolean } = {}) => {
+        if (opts.silent) {
+            setRefreshing(true);
+        } else {
+            setLoading(true);
+        }
 
-        fetchMyRequirements()
+        return fetchMyRequirements()
             .then((res) => {
-                if (!cancelled) setRequirements(res.data);
+                setRequirements(res.data);
+                // Leads can flip between open/closed/accepted on the admin
+                // or seller side while this page sits open in a tab — a
+                // fresh fetch is the source of truth, so drop any stale
+                // local overrides from a previous render.
+                setWon({});
+                setTaken({});
+                setError("");
             })
             .catch((err) => {
-                if (!cancelled) {
-                    setError(
-                        err instanceof ApiError ? err.message : "Couldn't load requirement leads."
-                    );
-                }
+                setError(err instanceof ApiError ? err.message : "Couldn't load requirement leads.");
             })
             .finally(() => {
-                if (!cancelled) setLoading(false);
+                setLoading(false);
+                setRefreshing(false);
             });
-
-        return () => {
-            cancelled = true;
-        };
     }, []);
+
+    useEffect(() => {
+        load();
+    }, [load]);
 
     async function handleAccept(requirement: ApiRequirement) {
         setAcceptingId(requirement.id);
@@ -73,11 +82,25 @@ export default function RequirementLeads() {
 
     return (
         <div className="p-6">
-            <h1 className="text-xl font-semibold text-slate-900">RFQ Leads</h1>
-            <p className="mt-1 text-sm text-slate-500">
-                Buyer requirements matching the categories you sell in, plus anything you've
-                already accepted. First supplier to accept gets the order.
-            </p>
+            <div className="flex items-start justify-between gap-4">
+                <div>
+                    <h1 className="text-xl font-semibold text-slate-900">RFQ Leads</h1>
+                    <p className="mt-1 text-sm text-slate-500">
+                        Buyer requirements matching the categories you sell in, plus anything you've
+                        already accepted. First supplier to accept gets the order.
+                    </p>
+                </div>
+
+                <button
+                    onClick={() => load({ silent: true })}
+                    disabled={loading || refreshing}
+                    className="flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                    title="A lead's status can change (e.g. closed by admin) while this page is open — refresh to see the latest."
+                >
+                    <RefreshCw size={14} className={refreshing ? "animate-spin" : ""} />
+                    Refresh
+                </button>
+            </div>
 
             {loading && <p className="mt-5 text-sm text-slate-400">Loading...</p>}
 

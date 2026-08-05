@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { CheckCircle2, FileText, Package, Send } from "lucide-react";
+import { CheckCircle2, Package, RefreshCw, Send } from "lucide-react";
 import { fetchMyRequirements, ApiRequirement, RequirementStatus } from "@/lib/home";
 import { ApiError } from "@/lib/api";
 
@@ -26,36 +26,55 @@ export default function MyRFQ() {
     const [requirements, setRequirements] = useState<ApiRequirement[]>([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
-    useEffect(() => {
-        let cancelled = false;
+    const load = useCallback((opts: { silent?: boolean } = {}) => {
+        if (opts.silent) {
+            setRefreshing(true);
+        } else {
+            setLoading(true);
+        }
 
-        fetchMyRequirements()
+        return fetchMyRequirements()
             .then((res) => {
-                if (!cancelled) setRequirements(res.data);
+                setRequirements(res.data);
+                setError("");
             })
             .catch((err) => {
-                if (!cancelled) {
-                    setError(err instanceof ApiError ? err.message : "Couldn't load your RFQs.");
-                }
+                setError(err instanceof ApiError ? err.message : "Couldn't load your RFQs.");
             })
             .finally(() => {
-                if (!cancelled) setLoading(false);
+                setLoading(false);
+                setRefreshing(false);
             });
-
-        return () => {
-            cancelled = true;
-        };
     }, []);
+
+    useEffect(() => {
+        load();
+    }, [load]);
 
     const filtered = requirements.filter((r) => tab === "all" || r.status === tab);
 
     return (
         <div className="p-6">
-            <h1 className="text-xl font-semibold text-slate-900">My RFQs</h1>
-            <p className="mt-1 text-sm text-slate-500">
-                Requirements you&apos;ve posted and whether a supplier has accepted them yet.
-            </p>
+            <div className="flex items-start justify-between gap-4">
+                <div>
+                    <h1 className="text-xl font-semibold text-slate-900">My RFQs</h1>
+                    <p className="mt-1 text-sm text-slate-500">
+                        Requirements you&apos;ve posted and whether a supplier has accepted them yet.
+                    </p>
+                </div>
+
+                <button
+                    onClick={() => load({ silent: true })}
+                    disabled={loading || refreshing}
+                    className="flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                    title="A requirement's status can change (e.g. accepted or closed) while this page is open — refresh to see the latest."
+                >
+                    <RefreshCw size={14} className={refreshing ? "animate-spin" : ""} />
+                    Refresh
+                </button>
+            </div>
 
             <div className="mt-5 flex gap-2">
                 {(["all", "open", "accepted", "closed"] as FilterTab[]).map((t) => (
