@@ -193,14 +193,17 @@ export interface ApiRequirement {
     title: string;
     quantity: number;
     unit: string;
-    phone: string;
+    // Optional backup number — the buyer's main contact is buyer.phone,
+    // revealed to a seller once they've won the requirement.
+    alternate_phone: string | null;
     status: RequirementStatus;
     accepted_at: string | null;
     created_at: string;
     category: { id: number; name: string; slug: string } | null;
     // Present on the buyer's own list.
     accepted_by_company?: { id: number; name: string; slug: string; logo_url: string | null } | null;
-    // Present on the seller's matched list.
+    // Present on the seller's matched list. `phone` is only included once
+    // this seller's company has won the requirement.
     buyer?: { id: number; name: string; phone?: string };
 }
 
@@ -216,7 +219,9 @@ export interface PostRequirementPayload {
     title: string;
     quantity: number;
     unit?: string;
-    phone: string;
+    // Optional — suppliers reach the buyer on their account number once
+    // they accept. This is just a fallback in case that one doesn't pick up.
+    alternate_phone?: string;
 }
 
 export function postRequirement(payload: PostRequirementPayload) {

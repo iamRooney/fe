@@ -18,7 +18,7 @@ export default function RequirementForm() {
     const [title, setTitle] = useState("");
     const [quantity, setQuantity] = useState("");
     const [unit, setUnit] = useState("Pieces");
-    const [phone, setPhone] = useState("");
+    const [alternatePhone, setAlternatePhone] = useState("");
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -56,11 +56,6 @@ export default function RequirementForm() {
             return;
         }
 
-        if (!phone.trim()) {
-            setError("Please enter a mobile number suppliers can reach you on.");
-            return;
-        }
-
         setError("");
         setLoading(true);
 
@@ -70,7 +65,7 @@ export default function RequirementForm() {
                 title: title || categories.find((c) => String(c.id) === categoryId)?.name || "Requirement",
                 quantity: qty,
                 unit,
-                phone,
+                alternate_phone: alternatePhone.trim() || undefined,
             });
             setSent(true);
         } catch (err) {
@@ -97,6 +92,7 @@ export default function RequirementForm() {
                         setTitle("");
                         setQuantity("");
                         setCategoryId("");
+                        setAlternatePhone("");
                     }}
                     className="mt-6 text-sm font-semibold text-[#F89A1C] hover:underline"
                 >
@@ -161,10 +157,10 @@ export default function RequirementForm() {
 
                 <Input
                     type="tel"
-                    label="Mobile Number"
-                    placeholder="+91 9876543210"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    label="Alternate Number (optional)"
+                    placeholder="In case your account number doesn't pick up"
+                    value={alternatePhone}
+                    onChange={(e) => setAlternatePhone(e.target.value)}
                 />
 
                 {error && (

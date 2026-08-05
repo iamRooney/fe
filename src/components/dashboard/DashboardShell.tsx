@@ -14,6 +14,7 @@ import MyEnquiries from "./buyer/Enquiries";
 import SavedSuppliers from "./buyer/Saved";
 import RecentlyViewed from "./buyer/Recently";
 import BuyerProfileEdit from "./buyer/ProfileEdit";
+import MyRFQ from "./buyer/MyRFQ";
 import AddProduct from "./seller/AddProduct";
 import MyProducts from "./seller/MyProducts";
 import RequirementLeads from "./seller/RequirementLeads";
@@ -41,7 +42,7 @@ export default function DashboardShell() {
     const navItems = getNavItems(role);
 
     // Buyer nav no longer has an "overview" tab, so fall back to the first
-    // available section (My Enquiries) instead of a blank/placeholder page.
+    // available section (My RFQs) instead of a blank/placeholder page.
     const currentSection =
         activeSection === "overview" && !navItems.some((n) => n.id === "overview")
             ? navItems[0]?.id ?? activeSection
@@ -64,6 +65,7 @@ export default function DashboardShell() {
         if (currentSection === "add-product") return <AddProduct />;
         if (currentSection === "products") return <MyProducts />;
         if (currentSection === "requirements" && role === "seller") return <RequirementLeads />;
+        if (currentSection === "requirements" && role === "buyer") return <MyRFQ />;
         const item = navItems.find((n) => n.id === currentSection);
         return <PlaceholderSection title={item?.label ?? ""} />;
     }

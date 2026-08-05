@@ -13,8 +13,9 @@ function timeAgo(iso: string) {
 }
 
 // Local view of an accepted item — keeps the buyer's phone number the
-// /accept response reveals, since the list endpoint only shows it once
-// a requirement is won (see RequirementController@accept on the backend).
+// /accept response reveals. The list endpoint (GET /requirements) also
+// includes it for anything this seller has already won, so a page
+// refresh doesn't lose it — see RequirementController@indexForSeller.
 type WonState = { phone: string };
 
 export default function RequirementLeads() {
@@ -74,8 +75,8 @@ export default function RequirementLeads() {
         <div className="p-6">
             <h1 className="text-xl font-semibold text-slate-900">RFQ Leads</h1>
             <p className="mt-1 text-sm text-slate-500">
-                Buyer requirements matching the categories you sell in. First supplier to
-                accept gets the order.
+                Buyer requirements matching the categories you sell in, plus anything you've
+                already accepted. First supplier to accept gets the order.
             </p>
 
             {loading && <p className="mt-5 text-sm text-slate-400">Loading...</p>}
@@ -98,7 +99,15 @@ export default function RequirementLeads() {
                     ) : (
                         <div className="divide-y divide-slate-100">
                             {visible.map((requirement) => {
-                                const isWon = won[requirement.id];
+                                // Anything with status "accepted" that made it into this
+                                // seller's list was accepted by them (see backend) — so
+                                // treat it as won even after a page refresh, not just
+                                // right after the accept click.
+                                const isWon =
+                                    won[requirement.id] ??
+                                    (requirement.status === "accepted"
+                                        ? { phone: requirement.buyer?.phone ?? "" }
+                                        : undefined);
                                 const isAccepting = acceptingId === requirement.id;
 
                                 return (
@@ -138,6 +147,16 @@ export default function RequirementLeads() {
                                                         >
                                                             <Phone size={12} />
                                                             {isWon.phone}
+                                                        </a>
+                                                    )}
+                                                    {requirement.alternate_phone && (
+                                                        <a
+                                                            href={`tel:${requirement.alternate_phone}`}
+                                                            className="ml-1 flex items-center gap-1 rounded-full bg-slate-50 px-2.5 py-1 text-xs text-slate-500 hover:bg-slate-100"
+                                                            title="Alternate number"
+                                                        >
+                                                            <Phone size={12} />
+                                                            {requirement.alternate_phone}
                                                         </a>
                                                     )}
                                                 </div>

@@ -23,9 +23,10 @@ const sellerNavItems: NavItem[] = [
     { id: "analytics", label: "Analytics", icon: BarChart3 },
 ];
 
-// Buyer dashboard is intentionally kept to just these 5 sections
-// (no overview / discovery, no post-RFQ) — see DashboardShell.
+// Buyer dashboard is intentionally kept to just these sections (no
+// overview / discovery, no post-RFQ form) — see DashboardShell.
 const buyerNavItems: NavItem[] = [
+    { id: "requirements", label: "My RFQs", icon: Send },
     { id: "enquiries", label: "My Enquiries", icon: FileText },
     { id: "saved", label: "Saved Suppliers", icon: Bookmark },
     { id: "recent", label: "Recently Viewed", icon: History },
