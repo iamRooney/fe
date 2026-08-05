@@ -16,6 +16,7 @@ import RecentlyViewed from "./buyer/Recently";
 import BuyerProfileEdit from "./buyer/ProfileEdit";
 import AddProduct from "./seller/AddProduct";
 import MyProducts from "./seller/MyProducts";
+import RequirementLeads from "./seller/RequirementLeads";
 
 export default function DashboardShell() {
     const router = useRouter();
@@ -62,6 +63,7 @@ export default function DashboardShell() {
         if (currentSection === "profile" && role === "buyer") return <BuyerProfileEdit />;
         if (currentSection === "add-product") return <AddProduct />;
         if (currentSection === "products") return <MyProducts />;
+        if (currentSection === "requirements" && role === "seller") return <RequirementLeads />;
         const item = navItems.find((n) => n.id === currentSection);
         return <PlaceholderSection title={item?.label ?? ""} />;
     }

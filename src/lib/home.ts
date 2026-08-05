@@ -178,3 +178,57 @@ export function recordProductView(productId: number) {
         { method: "POST", body: { product_id: productId }, auth: true }
     );
 }
+
+// --- Post Your Requirement (RFQ) -------------------------------------------
+//
+// A buyer posts what they're sourcing (e.g. "Potato Snacks"); it's shown to
+// every seller listing a product/service in that category. First seller to
+// accept gets the order.
+
+export type RequirementStatus = "open" | "accepted" | "closed";
+
+export interface ApiRequirement {
+    id: number;
+    requirement_number: string;
+    title: string;
+    quantity: number;
+    unit: string;
+    phone: string;
+    status: RequirementStatus;
+    accepted_at: string | null;
+    created_at: string;
+    category: { id: number; name: string; slug: string } | null;
+    // Present on the buyer's own list.
+    accepted_by_company?: { id: number; name: string; slug: string; logo_url: string | null } | null;
+    // Present on the seller's matched list.
+    buyer?: { id: number; name: string; phone?: string };
+}
+
+export function fetchMyRequirements() {
+    return apiRequest<{ success: boolean; data: ApiRequirement[] }>(
+        "/requirements",
+        { auth: true }
+    );
+}
+
+export interface PostRequirementPayload {
+    category_id: number;
+    title: string;
+    quantity: number;
+    unit?: string;
+    phone: string;
+}
+
+export function postRequirement(payload: PostRequirementPayload) {
+    return apiRequest<{ success: boolean; message: string; data: ApiRequirement }>(
+        "/requirements",
+        { method: "POST", body: payload, auth: true }
+    );
+}
+
+export function acceptRequirement(id: number) {
+    return apiRequest<{ success: boolean; message: string; data: ApiRequirement }>(
+        `/requirements/${id}/accept`,
+        { method: "POST", auth: true }
+    );
+}

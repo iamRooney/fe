@@ -1,6 +1,6 @@
 import {
     LayoutDashboard, MessageSquare, Package, PlusCircle,
-    Building2, BarChart3, FileText, Bookmark, History, User, LucideIcon,
+    Building2, BarChart3, FileText, Bookmark, History, User, Send, LucideIcon,
 } from "lucide-react";
 
 import { UserRole } from "@/lib/types";
@@ -16,6 +16,7 @@ const sharedNavItems: NavItem[] = [
 ];
 
 const sellerNavItems: NavItem[] = [
+    { id: "requirements", label: "RFQ Leads", icon: Send },
     { id: "products", label: "My Products", icon: Package },
     { id: "add-product", label: "Add Product", icon: PlusCircle },
     { id: "profile", label: "Company Profile", icon: Building2 },
