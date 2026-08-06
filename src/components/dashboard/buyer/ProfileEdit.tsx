@@ -1,66 +1,61 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Camera, CheckCircle2, Loader2, Trash2, Upload, User as UserIcon } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { Camera, Loader2, CheckCircle2 } from "lucide-react";
 import { apiRequest, ApiError } from "@/lib/api";
+import { useAuth } from "@/hooks/useAuth";
 import { updateStoredUser, StoredUser } from "@/lib/auth";
 
-function ProfileEditForm({ user }: { user: StoredUser }) {
+export default function ProfileEdit() {
+    const auth = useAuth();
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const [name, setName] = useState(user.name ?? "");
-    const [email, setEmail] = useState(user.email ?? "");
-    const [avatarFile, setAvatarFile] = useState<File | null>(null);
-    const [preview, setPreview] = useState<string | null>(user.profile_image_url ?? null);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [profileImage, setProfileImage] = useState<File | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
 
-    const [loading, setLoading] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [saved, setSaved] = useState(false);
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState(false);
 
-    function handleFile(selected: File) {
-        setAvatarFile(selected);
-        setSuccess(false);
-        const reader = new FileReader();
-        reader.onload = () => setPreview(reader.result as string);
-        reader.readAsDataURL(selected);
-    }
-
-    function removePhoto() {
-        setAvatarFile(null);
-        setPreview(null);
-        setSuccess(false);
-        if (inputRef.current) inputRef.current.value = "";
-    }
-
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-
-        if (!name.trim()) {
-            setError("Please enter your full name.");
-            return;
+    useEffect(() => {
+        if (auth?.user) {
+            setName(auth.user.name ?? "");
+            setEmail(auth.user.email ?? "");
         }
+    }, [auth?.user]);
 
+    function handleFile(file: File | null) {
+        setProfileImage(file);
+        setPreview((prev) => {
+            if (prev) URL.revokeObjectURL(prev);
+            return file ? URL.createObjectURL(file) : null;
+        });
+    }
+
+    async function handleSave() {
+        if (!name.trim() || saving) return;
+
+        setSaving(true);
+        setSaved(false);
         setError("");
-        setSuccess(false);
-        setLoading(true);
 
         try {
             const fields: Record<string, string> = {
-                name,
-                email: email || "",
+                name: name.trim(),
+                email: email.trim(),
                 role: "buyer",
             };
 
             let body: FormData | typeof fields = fields;
-
-            if (avatarFile) {
+            if (profileImage) {
                 const formData = new FormData();
                 Object.entries(fields).forEach(([key, value]) => {
                     if (value !== "") formData.append(key, value);
                 });
-                formData.append("profile_image", avatarFile);
+                formData.append("profile_image", profileImage);
                 body = formData;
             }
 
@@ -70,164 +65,102 @@ function ProfileEditForm({ user }: { user: StoredUser }) {
             );
 
             updateStoredUser(res.data);
-            setAvatarFile(null);
-            setSuccess(true);
-
-            // Sidebar/header read the cached user from localStorage on mount only,
-            // so refresh to pick up the new name/avatar everywhere.
-            setTimeout(() => window.location.reload(), 700);
+            setSaved(true);
         } catch (err) {
-            setError(
-                err instanceof ApiError ? err.message : "Something went wrong. Please try again."
-            );
+            setError(err instanceof ApiError ? err.message : "Couldn't save your changes.");
         } finally {
-            setLoading(false);
+            setSaving(false);
         }
     }
 
+    const avatarSrc = preview ?? auth?.user?.profile_image_url ?? null;
+
     return (
         <div className="p-6">
-            <h1 className="text-xl font-semibold text-slate-900">Edit Profile</h1>
-            <p className="mt-1 text-sm text-slate-500">
-                Keep your name, photo, and contact email up to date.
-            </p>
+            <h1 className="text-xl font-semibold text-slate-900">Profile Edit</h1>
+            <p className="mt-1 text-sm text-slate-500">Keep your details up to date.</p>
 
-            <form
-                onSubmit={handleSubmit}
-                className="mt-6 max-w-xl rounded-xl border border-slate-200 bg-white p-6"
-            >
-                <div className="flex flex-col items-center">
+            <div className="mt-6 max-w-lg rounded-xl border border-slate-200 bg-white p-6">
+                <div className="flex items-center gap-4">
                     <div
                         onClick={() => inputRef.current?.click()}
-                        className="group relative flex h-28 w-28 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-slate-300 bg-slate-50 transition hover:border-blue-600 hover:bg-blue-50"
+                        className="group relative flex h-16 w-16 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-slate-300 bg-slate-50 hover:border-[#0057D9]"
                     >
-                        {preview ? (
-                            <Image
-                                src={preview}
-                                alt="Profile picture"
-                                fill
-                                unoptimized
-                                className="object-cover"
-                            />
+                        {avatarSrc ? (
+                            <Image src={avatarSrc} alt="Profile" fill unoptimized className="object-cover" />
                         ) : (
-                            <Camera className="text-slate-400 group-hover:text-blue-600" size={28} />
+                            <Camera className="h-5 w-5 text-slate-400 group-hover:text-[#0057D9]" />
                         )}
                     </div>
-
+                    <button
+                        onClick={() => inputRef.current?.click()}
+                        className="text-sm font-medium text-[#0057D9] hover:underline"
+                    >
+                        Change photo
+                    </button>
                     <input
                         ref={inputRef}
-                        hidden
                         type="file"
+                        hidden
                         accept="image/*"
-                        onChange={(e) => {
-                            const selected = e.target.files?.[0];
-                            if (selected) handleFile(selected);
-                        }}
+                        onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
                     />
+                </div>
 
-                    <div className="mt-3 flex items-center gap-2">
-                        <button
-                            type="button"
-                            onClick={() => inputRef.current?.click()}
-                            className="flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100"
-                        >
-                            <Upload size={14} />
-                            Change Photo
-                        </button>
-
-                        {preview && (
-                            <button
-                                type="button"
-                                onClick={removePhoto}
-                                className="flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
-                            >
-                                <Trash2 size={14} />
-                                Remove
-                            </button>
-                        )}
+                <div className="mt-6 space-y-4">
+                    <div>
+                        <label className="mb-1.5 block text-xs font-medium text-slate-600">Full Name</label>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-[#0057D9] focus:ring-2 focus:ring-[#0057D9]/10"
+                        />
                     </div>
-                </div>
-
-                <div className="mt-6">
-                    <label className="mb-2 block text-sm font-medium text-slate-700">Full Name</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="e.g. Arjun Menon"
-                        className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-slate-700 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                    />
-                </div>
-
-                <div className="mt-5">
-                    <label className="mb-2 block text-sm font-medium text-slate-700">
-                        Email <span className="font-normal text-slate-400">(optional)</span>
-                    </label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@example.com"
-                        className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-slate-700 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                    />
-                </div>
-
-                <div className="mt-5">
-                    <label className="mb-2 block text-sm font-medium text-slate-700">Phone</label>
-                    <input
-                        type="text"
-                        value={user.phone ?? ""}
-                        disabled
-                        className="w-full cursor-not-allowed rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-400"
-                    />
-                    <p className="mt-1.5 text-xs text-slate-400">
-                        Phone number is tied to your login and can&apos;t be changed here.
-                    </p>
+                    <div>
+                        <label className="mb-1.5 block text-xs font-medium text-slate-600">
+                            Email <span className="font-normal text-slate-400">(optional)</span>
+                        </label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-[#0057D9] focus:ring-2 focus:ring-[#0057D9]/10"
+                        />
+                    </div>
+                    <div>
+                        <label className="mb-1.5 block text-xs font-medium text-slate-600">Phone</label>
+                        <input
+                            type="text"
+                            value={auth?.user?.phone ?? ""}
+                            disabled
+                            className="w-full cursor-not-allowed rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-400"
+                        />
+                    </div>
                 </div>
 
                 {error && <p className="mt-4 text-sm font-medium text-red-500">{error}</p>}
 
-                {success && (
-                    <p className="mt-4 flex items-center gap-1.5 text-sm font-medium text-green-600">
-                        <CheckCircle2 size={16} />
-                        Profile updated. Refreshing…
-                    </p>
-                )}
-
                 <button
-                    type="submit"
-                    disabled={loading}
-                    className="mt-6 flex items-center justify-center gap-2 rounded-xl bg-[#0057D9] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+                    onClick={handleSave}
+                    disabled={saving || !name.trim()}
+                    className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-[#0057D9] px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                    {loading ? (
+                    {saving ? (
                         <>
-                            <Loader2 size={16} className="animate-spin" />
-                            Saving…
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            Saving...
+                        </>
+                    ) : saved ? (
+                        <>
+                            <CheckCircle2 className="h-4 w-4" />
+                            Saved
                         </>
                     ) : (
-                        "Save Changes"
+                        "Save changes"
                     )}
                 </button>
-            </form>
+            </div>
         </div>
     );
-}
-
-export default function BuyerProfileEdit() {
-    const auth = useAuth();
-
-    if (auth === null || !auth.user) {
-        return (
-            <div className="p-6">
-                <div className="flex h-40 items-center justify-center text-slate-400">
-                    <UserIcon className="mr-2 animate-pulse" size={18} />
-                    Loading profile…
-                </div>
-            </div>
-        );
-    }
-
-    // key forces a remount (and fresh useState defaults) if the underlying
-    // user record ever changes identity, e.g. after a re-login.
-    return <ProfileEditForm key={auth.user.id} user={auth.user} />;
 }

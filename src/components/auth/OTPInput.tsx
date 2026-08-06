@@ -38,11 +38,9 @@ export default function OTPInput({
                         inputs.current[index] = el;
                     }}
                     value={digit}
-                    onChange={(e) =>
-                        handleChange(index, e.target.value)
-                    }
+                    onChange={(e) => handleChange(index, e.target.value)}
                     maxLength={1}
-                    className="h-11 w-11 rounded-xl border text-center text-xl font-bold outline-none focus:border-blue-600 sm:h-14 sm:w-14 sm:text-2xl"
+                    className="h-11 w-11 rounded-xl border border-slate-300 bg-white text-center text-xl font-bold text-slate-900 outline-none focus:border-blue-600 sm:h-14 sm:w-14 sm:text-2xl"
                 />
             ))}
         </div>

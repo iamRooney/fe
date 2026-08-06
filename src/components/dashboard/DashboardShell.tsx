@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { LogOut, User, Home } from "lucide-react";
-import { getNavItems } from "./dashboard-nav";
+import { getNavItems, getDefaultSection } from "./dashboard-nav";
 import { useAuth } from "@/hooks/useAuth";
 import { clearAuthSession } from "@/lib/auth";
 import DashboardOverview from "./DashboardOverview";
@@ -14,15 +14,14 @@ import MyEnquiries from "./buyer/Enquiries";
 import SavedSuppliers from "./buyer/Saved";
 import RecentlyViewed from "./buyer/Recently";
 import BuyerProfileEdit from "./buyer/ProfileEdit";
-import MyRFQ from "./buyer/MyRFQ";
 import AddProduct from "./seller/AddProduct";
 import MyProducts from "./seller/MyProducts";
-import RequirementLeads from "./seller/RequirementLeads";
+import CompanyProfile from "./seller/CompanyProfile";
 
 export default function DashboardShell() {
     const router = useRouter();
     const auth = useAuth();
-    const [activeSection, setActiveSection] = useState("overview");
+    const [activeSection, setActiveSection] = useState<string | null>(null);
 
     const needsRedirect = auth !== null && (!auth.isAuthenticated || !auth.role);
 
@@ -32,21 +31,23 @@ export default function DashboardShell() {
         }
     }, [needsRedirect, router]);
 
-    // Still checking localStorage, or about to redirect — render nothing
-    if (auth === null || needsRedirect) {
+    // Land each role on its own default tab once we know who they are —
+    // buyers no longer have an "overview" tab, sellers still do.
+    useEffect(() => {
+        if (activeSection === null && auth?.role) {
+            setActiveSection(getDefaultSection(auth.role));
+        }
+    }, [auth, activeSection]);
+
+    // Still checking localStorage, about to redirect, or waiting to know
+    // which section to land on — render nothing.
+    if (auth === null || needsRedirect || activeSection === null) {
         return <div className="flex h-screen items-center justify-center bg-slate-50" />;
     }
 
     const role = auth.role!;
     const user = auth.user;
     const navItems = getNavItems(role);
-
-    // Buyer nav no longer has an "overview" tab, so fall back to the first
-    // available section (My RFQs) instead of a blank/placeholder page.
-    const currentSection =
-        activeSection === "overview" && !navItems.some((n) => n.id === "overview")
-            ? navItems[0]?.id ?? activeSection
-            : activeSection;
 
     function handleLogout() {
         clearAuthSession();
@@ -56,17 +57,18 @@ export default function DashboardShell() {
     }
 
     function renderSection() {
-        if (currentSection === "overview") return <DashboardOverview role={role} />;
-        if (currentSection === "messages") return <MessagesPage />;
-        if (currentSection === "enquiries") return <MyEnquiries />;
-        if (currentSection === "saved") return <SavedSuppliers />;
-        if (currentSection === "recent") return <RecentlyViewed />;
-        if (currentSection === "profile" && role === "buyer") return <BuyerProfileEdit />;
-        if (currentSection === "add-product") return <AddProduct />;
-        if (currentSection === "products") return <MyProducts />;
-        if (currentSection === "requirements" && role === "seller") return <RequirementLeads />;
-        if (currentSection === "requirements" && role === "buyer") return <MyRFQ />;
-        const item = navItems.find((n) => n.id === currentSection);
+        if (role === "seller" && activeSection === "overview") {
+            return <DashboardOverview role={role} onNavigate={setActiveSection} />;
+        }
+        if (activeSection === "messages") return <MessagesPage />;
+        if (role === "buyer" && activeSection === "enquiries") return <MyEnquiries />;
+        if (role === "buyer" && activeSection === "saved") return <SavedSuppliers />;
+        if (role === "buyer" && activeSection === "recent") return <RecentlyViewed />;
+        if (role === "seller" && activeSection === "add-product") return <AddProduct />;
+        if (role === "seller" && activeSection === "products") return <MyProducts />;
+        if (role === "seller" && activeSection === "profile") return <CompanyProfile />;
+        if (role === "buyer" && activeSection === "profile") return <BuyerProfileEdit />;
+        const item = navItems.find((n) => n.id === activeSection);
         return <PlaceholderSection title={item?.label ?? ""} />;
     }
 
@@ -91,7 +93,7 @@ export default function DashboardShell() {
                 <nav className="flex-1 space-y-1 p-3">
                     {navItems.map((item) => {
                         const Icon = item.icon;
-                        const isActive = currentSection === item.id;
+                        const isActive = activeSection === item.id;
                         return (
                             <button
                                 key={item.id}

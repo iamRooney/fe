@@ -19,7 +19,7 @@ export function useCategories() {
                     data.map((c) => ({
                         id: String(c.id),
                         name: c.name,
-                        icon: c.icon ?? "monitor", // CategoryGrid falls back to a default icon for unknown keys
+                        icon: "monitor", // API only gives an icon_url (image); CategoryGrid renders lucide icon keys, so fall back to a default until that's reconciled
                         productCount: 0, // not tracked by the API yet
                     }))
                 );

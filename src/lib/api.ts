@@ -1,7 +1,7 @@
 // Thin wrapper around fetch for talking to the Laravel backend.
 // Set NEXT_PUBLIC_API_URL in .env.local if the backend isn't at the default.
 export const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
+    process.env.NEXT_PUBLIC_API_URL ?? "http://192.168.1.47:8000/api";
 
 export const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "");
 

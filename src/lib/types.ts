@@ -1,5 +1,18 @@
 export type UserRole = "buyer" | "seller";
 
+// Shape of the user object the backend returns from /auth/verify-otp,
+// /auth/me, and /profile/complete.
+export interface ApiUser {
+    id: number;
+    name: string;
+    phone: string;
+    email: string | null;
+    role: UserRole | null;
+    is_profile_completed: boolean;
+    profile_image?: string | null;
+    profile_image_url?: string | null;
+}
+
 export interface User {
     id: string;
     name: string;

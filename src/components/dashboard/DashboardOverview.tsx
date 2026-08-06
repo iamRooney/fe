@@ -7,6 +7,8 @@ import TrustSealBanner from "./TrustSealBanner";
 
 interface DashboardOverviewProps {
     role: UserRole;
+    /** Jump the dashboard shell to another section (buyer overview only). */
+    onNavigate?: (section: string) => void;
 }
 
 function SellerOverview() {
@@ -55,7 +57,7 @@ function SellerOverview() {
     );
 }
 
-export default function DashboardOverview({ role }: DashboardOverviewProps) {
+export default function DashboardOverview({ role, onNavigate }: DashboardOverviewProps) {
     return (
         <div className="p-6">
             <h1 className="text-xl font-semibold text-slate-900">Welcome back</h1>
@@ -66,7 +68,7 @@ export default function DashboardOverview({ role }: DashboardOverviewProps) {
             </p>
 
             <div className="mt-6">
-                {role === "seller" ? <SellerOverview /> : <BuyerDiscovery />}
+                {role === "seller" ? <SellerOverview /> : <BuyerDiscovery onNavigate={onNavigate} />}
             </div>
         </div>
     );

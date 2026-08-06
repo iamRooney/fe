@@ -1,6 +1,6 @@
 import {
     LayoutDashboard, MessageSquare, Package, PlusCircle,
-    Building2, BarChart3, FileText, Bookmark, History, User, Send, LucideIcon,
+    Building2, BarChart3, FileText, Bookmark, History, UserCog, LucideIcon,
 } from "lucide-react";
 
 import { UserRole } from "@/lib/types";
@@ -11,33 +11,29 @@ export interface NavItem {
     icon: LucideIcon;
 }
 
-const sharedNavItems: NavItem[] = [
-    { id: "overview", label: "Overview", icon: LayoutDashboard },
-];
-
 const sellerNavItems: NavItem[] = [
-    { id: "requirements", label: "RFQ Leads", icon: Send },
+    { id: "overview", label: "Overview", icon: LayoutDashboard },
     { id: "products", label: "My Products", icon: Package },
     { id: "add-product", label: "Add Product", icon: PlusCircle },
     { id: "profile", label: "Company Profile", icon: Building2 },
     { id: "analytics", label: "Analytics", icon: BarChart3 },
+    { id: "messages", label: "Messages", icon: MessageSquare },
 ];
 
-// Buyer dashboard is intentionally kept to just these sections (no
-// overview / discovery, no post-RFQ form) — see DashboardShell.
+// Kept deliberately minimal — the buyer dashboard only needs these five.
 const buyerNavItems: NavItem[] = [
-    { id: "requirements", label: "My RFQs", icon: Send },
     { id: "enquiries", label: "My Enquiries", icon: FileText },
     { id: "saved", label: "Saved Suppliers", icon: Bookmark },
     { id: "recent", label: "Recently Viewed", icon: History },
+    { id: "messages", label: "Messages", icon: MessageSquare },
+    { id: "profile", label: "Profile Edit", icon: UserCog },
 ];
 
-const messagesNavItem: NavItem = { id: "messages", label: "Messages", icon: MessageSquare };
-const buyerProfileNavItem: NavItem = { id: "profile", label: "Edit Profile", icon: User };
-
 export function getNavItems(role: UserRole): NavItem[] {
-    if (role === "buyer") {
-        return [...buyerNavItems, messagesNavItem, buyerProfileNavItem];
-    }
-    return [...sharedNavItems, ...sellerNavItems, messagesNavItem];
+    return role === "seller" ? sellerNavItems : buyerNavItems;
+}
+
+/** The section a role lands on when they first open the dashboard. */
+export function getDefaultSection(role: UserRole): string {
+    return role === "seller" ? "overview" : "enquiries";
 }

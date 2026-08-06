@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "localhost",
+        hostname: "192.168.1.47",
         port: "8000",
         pathname: "/storage/**",
       },
@@ -15,5 +15,9 @@ const nextConfig: NextConfig = {
     turbopackFileSystemCacheForDev: false,
   },
 };
+
+module.exports = {
+  allowedDevOrigins: ['192.168.1.47'],
+}
 
 export default nextConfig;
