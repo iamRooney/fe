@@ -2,15 +2,25 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/home/Footer/Footer";
 import Container from "@/components/ui/Container";
 import SearchResults from "@/components/search/SearchResults";
+import SearchFilters from "@/components/search/SearchFilters";
 
 interface SearchPageProps {
-    searchParams: Promise<{ q?: string; location?: string }>;
+    searchParams: Promise<{
+        q?: string;
+        location?: string;
+        category?: string;
+        min_price?: string;
+        max_price?: string;
+    }>;
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-    const { q, location } = await searchParams;
+    const { q, location, category, min_price, max_price } = await searchParams;
     const query = (q ?? "").trim();
     const locationQuery = (location ?? "").trim();
+    const categoryQuery = (category ?? "").trim();
+    const minPrice = (min_price ?? "").trim();
+    const maxPrice = (max_price ?? "").trim();
 
     return (
         <>
@@ -28,8 +38,25 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         Search Results
                     </h1>
 
-                    <div className="mt-8">
-                        <SearchResults query={query} location={locationQuery} />
+                    <div className="mt-8 flex flex-col gap-6 lg:flex-row lg:items-start">
+
+                        <SearchFilters
+                            query={query}
+                            location={locationQuery}
+                            minPrice={minPrice}
+                            maxPrice={maxPrice}
+                        />
+
+                        <div className="flex-1">
+                            <SearchResults
+                                query={query}
+                                location={locationQuery}
+                                category={categoryQuery}
+                                minPrice={minPrice}
+                                maxPrice={maxPrice}
+                            />
+                        </div>
+
                     </div>
 
                 </Container>

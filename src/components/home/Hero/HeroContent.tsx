@@ -28,7 +28,7 @@ export default function HeroContent() {
 
             <div className="mt-8 flex flex-wrap gap-4 sm:mt-10 sm:gap-5">
 
-                <Link href="/categories">
+                <Link href="/search">
                     <Button variant="primary">
                         Explore Marketplace
                     </Button>

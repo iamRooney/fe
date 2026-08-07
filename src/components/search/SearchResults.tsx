@@ -56,9 +56,15 @@ function SectionHeading({ title, count }: { title: string; count: number }) {
 export default function SearchResults({
     query,
     location,
+    category,
+    minPrice,
+    maxPrice,
 }: {
     query: string;
     location?: string;
+    category?: string;
+    minPrice?: string;
+    maxPrice?: string;
 }) {
     const [data, setData] = useState<SearchResultsData | null>(null);
     const [error, setError] = useState("");
@@ -69,7 +75,7 @@ export default function SearchResults({
         setLoading(true);
         setError("");
 
-        fetchSearch({ q: query, location })
+        fetchSearch({ q: query, location, category, minPrice, maxPrice })
             .then((result) => {
                 if (!cancelled) setData(result);
             })
@@ -89,7 +95,7 @@ export default function SearchResults({
         return () => {
             cancelled = true;
         };
-    }, [query, location]);
+    }, [query, location, category, minPrice, maxPrice]);
 
     if (loading) {
         return <p className="text-sm text-gray-400">Searching...</p>;
@@ -110,7 +116,7 @@ export default function SearchResults({
                 No results found
                 {query ? ` for "${query}"` : ""}
                 {location ? ` near ${location}` : ""}. Try a different search
-                term{location ? " or area" : ""}.
+                term{location ? " or area" : ""}, or adjust your filters.
             </p>
         );
     }

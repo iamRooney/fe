@@ -48,10 +48,19 @@ export function fetchCities() {
     return apiRequest<ApiCity[]>("/cities");
 }
 
-export function fetchSearch(params: { q?: string; location?: string }) {
+export function fetchSearch(params: {
+    q?: string;
+    location?: string;
+    category?: string;
+    minPrice?: string;
+    maxPrice?: string;
+}) {
     const query = new URLSearchParams();
     if (params.q) query.set("q", params.q);
     if (params.location) query.set("location", params.location);
+    if (params.category) query.set("category", params.category);
+    if (params.minPrice) query.set("min_price", params.minPrice);
+    if (params.maxPrice) query.set("max_price", params.maxPrice);
 
     const qs = query.toString();
     return apiRequest<SearchResults>(`/search${qs ? `?${qs}` : ""}`);

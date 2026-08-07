@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Container from "@/components/ui/Container";
 import SupplierCard from "./SupplierCard";
 import { Supplier } from "./types";
 import {
@@ -116,7 +117,7 @@ export default function TrustedSuppliers() {
 
     return (
         <section className="bg-white py-20">
-            <div className="mx-auto max-w-7xl px-6">
+            <Container>
 
                 <div className="mb-10 flex items-center justify-between">
 
@@ -157,7 +158,7 @@ export default function TrustedSuppliers() {
                     ))}
 
                 </div>
-            </div>
+            </Container>
         </section>
     );
 }

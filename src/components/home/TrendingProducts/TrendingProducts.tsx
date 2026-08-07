@@ -1,9 +1,10 @@
+import Container from "@/components/ui/Container";
 import ProductSlider from "./ProductSlider";
 
 export default function TrendingProducts() {
     return (
         <section className="bg-gray-50 py-20">
-            <div className="mx-auto max-w-7xl px-6">
+            <Container>
                 <div className="mb-8 flex items-center justify-between">
                     <div>
                         <p className="text-sm text-gray-500">
@@ -21,7 +22,7 @@ export default function TrendingProducts() {
                 </div>
 
                 <ProductSlider />
-            </div>
+            </Container>
         </section>
     );
 }

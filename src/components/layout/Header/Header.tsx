@@ -16,6 +16,8 @@ export default function Header() {
     function handleSearch(e: FormEvent) {
         e.preventDefault();
 
+        if (!query.trim() && !location.trim()) return;
+
         const params = new URLSearchParams();
         if (query.trim()) params.set("q", query.trim());
         if (location.trim()) params.set("location", location.trim());
@@ -23,6 +25,8 @@ export default function Header() {
         const qs = params.toString();
         router.push(qs ? `/search?${qs}` : "/search");
     }
+
+    const canSearch = Boolean(query.trim() || location.trim());
 
     return (
         <header className="bg-white border-b border-gray-200">
@@ -74,7 +78,8 @@ export default function Header() {
 
                             <button
                                 type="submit"
-                                className="flex w-[56px] shrink-0 items-center justify-center gap-2 bg-[#F89A1C] font-medium text-white transition hover:bg-[#e88910] sm:w-[170px]"
+                                disabled={!canSearch}
+                                className="flex w-[56px] shrink-0 items-center justify-center gap-2 bg-[#F89A1C] font-medium text-white transition hover:bg-[#e88910] disabled:cursor-not-allowed disabled:bg-orange-300 disabled:hover:bg-orange-300 sm:w-[170px]"
                             >
 
                                 <Search size={18} />
