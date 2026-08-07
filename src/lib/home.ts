@@ -195,3 +195,30 @@ export function fetchMyEnquiries(params: { limit?: number } = {}) {
         }
     );
 }
+
+/* -------------------------------------------------------------------------- */
+/*                              Recently Viewed                               */
+/* -------------------------------------------------------------------------- */
+
+export interface ApiRecentlyViewedItem {
+    id: number;
+    viewed_at: string;
+    product: ApiProduct | null;
+}
+
+export function fetchRecentlyViewed(params: { limit?: number } = {}) {
+    const query = new URLSearchParams();
+
+    if (params.limit) {
+        query.set("limit", String(params.limit));
+    }
+
+    const qs = query.toString();
+
+    return apiRequest<{ success: boolean; data: ApiRecentlyViewedItem[] }>(
+        `/recently-viewed${qs ? `?${qs}` : ""}`,
+        {
+            auth: true,
+        }
+    );
+}

@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { apiRequest, ApiError } from "@/lib/api";
 import { updateStoredUser, clearPendingRole, StoredUser } from "@/lib/auth";
+import { uploadCompanyDocument } from "@/lib/api/documents";
 import { BusinessTypeValue } from "./BusinessType";
+import { IdentityDocsValue } from "./IdentityDocuments";
 
 interface Props {
     name: string;
@@ -13,9 +15,10 @@ interface Props {
     role: "buyer" | "seller";
     business: BusinessTypeValue;
     profileImage: File | null;
+    identityDocs?: IdentityDocsValue;
 }
 
-export default function ContinueButton({ name, email, role, business, profileImage }: Props) {
+export default function ContinueButton({ name, email, role, business, profileImage, identityDocs }: Props) {
     const router = useRouter();
 
     const [loading, setLoading] = useState(false);
@@ -87,6 +90,28 @@ export default function ContinueButton({ name, email, role, business, profileIma
 
             updateStoredUser(res.data);
             clearPendingRole();
+
+            // Identity docs can only be attached once the seller's company
+            // exists, which /profile/complete just created above — so this
+            // has to happen as a second step, not in the same request.
+            // Best-effort: a failed doc upload shouldn't strand the user on
+            // this screen after their profile was already created.
+            if (role === "seller" && identityDocs) {
+                const uploads: Promise<unknown>[] = [];
+                if (identityDocs.aadhar) {
+                    uploads.push(uploadCompanyDocument("aadhar_card", identityDocs.aadhar));
+                }
+                if (identityDocs.pan) {
+                    uploads.push(uploadCompanyDocument("pan_card", identityDocs.pan));
+                }
+                if (uploads.length) {
+                    const results = await Promise.allSettled(uploads);
+                    const failed = results.some((r) => r.status === "rejected");
+                    if (failed) {
+                        console.error("One or more identity documents failed to upload", results);
+                    }
+                }
+            }
 
             router.push(role === "seller" ? "/dashboard" : "/");
         } catch (err) {

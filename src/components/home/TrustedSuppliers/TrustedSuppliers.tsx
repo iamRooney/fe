@@ -125,7 +125,7 @@ export default function TrustedSuppliers() {
                             Trusted Global Industrial Suppliers
                         </p>
 
-                        <h2 className="mt-2 text-3xl font-bold text-gray-500">
+                        <h2 className="mt-2 text-3xl font-bold text-[#1F2937]">
                             Trusted Verified Suppliers
                         </h2>
                     </div>

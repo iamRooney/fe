@@ -10,7 +10,7 @@ export default function TrendingProducts() {
                             Discover our latest industrial products
                         </p>
 
-                        <h2 className="text-3xl font-bold text-gray-500">
+                        <h2 className="text-3xl font-bold text-[#1F2937]">
                             Trending Products
                         </h2>
                     </div>

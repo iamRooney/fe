@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import LogoUploader from "./LogoUploader";
 import BusinessType, { BusinessTypeValue } from "./BusinessType";
 import BuyerDetails from "./BuyerDetails";
+import IdentityDocuments, { IdentityDocsValue } from "./IdentityDocuments";
 import ContinueButton from "./ContinueButton";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +31,10 @@ export default function CompleteProfileCard() {
     });
     const [interests, setInterests] = useState<string[]>([]);
     const [profileImage, setProfileImage] = useState<File | null>(null);
+    const [identityDocs, setIdentityDocs] = useState<IdentityDocsValue>({
+        aadhar: null,
+        pan: null,
+    });
 
     // Still checking localStorage — avoid a flash of the wrong form
     if (auth === null) {
@@ -117,6 +122,12 @@ export default function CompleteProfileCard() {
                         )}
                     </div>
 
+                    {isSeller && (
+                        <div className="mt-8 sm:mt-10">
+                            <IdentityDocuments value={identityDocs} onChange={setIdentityDocs} />
+                        </div>
+                    )}
+
                     <div className="mt-8 sm:mt-10">
                         <ContinueButton
                             name={isSeller ? business.name : name}
@@ -124,6 +135,7 @@ export default function CompleteProfileCard() {
                             role={role}
                             business={business}
                             profileImage={profileImage}
+                            identityDocs={isSeller ? identityDocs : undefined}
                         />
                     </div>
                 </div>
