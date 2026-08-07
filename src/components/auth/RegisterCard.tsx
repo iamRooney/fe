@@ -18,6 +18,10 @@ export default function RegisterCard({ mode }: Props) {
     const [step, setStep] = useState<Step>(mode === "register" ? "role" : "phone");
     const [role, setRole] = useState<UserRole | null>(null);
     const [phone, setPhone] = useState("");
+    // Email OTP login is a login-only alternative to phone (registration
+    // still requires a phone number on the backend).
+    const [loginMethod, setLoginMethod] = useState<"phone" | "email">("phone");
+    const [email, setEmail] = useState("");
 
     return (
         <section className="mx-auto w-full max-w-md">
@@ -49,6 +53,10 @@ export default function RegisterCard({ mode }: Props) {
                                 mode={mode}
                                 phone={phone}
                                 setPhone={setPhone}
+                                loginMethod={loginMethod}
+                                setLoginMethod={setLoginMethod}
+                                email={email}
+                                setEmail={setEmail}
                                 onProceed={() => setStep("otp")}
                                 onBack={mode === "register" ? () => setStep("role") : undefined}
                             />
@@ -64,6 +72,8 @@ export default function RegisterCard({ mode }: Props) {
                             <OTPStep
                                 mode={mode}
                                 phone={phone}
+                                loginMethod={loginMethod}
+                                email={email}
                                 role={role}
                                 onBack={() => setStep("phone")}
                             />

@@ -30,6 +30,11 @@ export default function ContinueButton({ name, email, role, business, profileIma
             return;
         }
 
+        if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError("Please enter a valid email address.");
+            return;
+        }
+
         if (role === "seller") {
             if (!business.companyName.trim()) {
                 setError("Please enter your company name.");

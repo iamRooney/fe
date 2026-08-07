@@ -100,7 +100,7 @@ export default function CompleteProfileCard() {
 
                                 <div>
                                     <label className="mb-2 block text-sm font-medium text-slate-700">
-                                        Email <span className="font-normal text-slate-400">(optional)</span>
+                                        Email
                                     </label>
                                     <input
                                         type="email"

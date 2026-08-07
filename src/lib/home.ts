@@ -73,6 +73,29 @@ export interface ApiEnquiry {
     service: { id: number; name: string; slug: string } | null;
 }
 
+export interface EnquiryPayload {
+    company_id: number;
+    // Backend requires exactly one of product_id / service_id.
+    product_id?: number;
+    service_id?: number;
+    message: string;
+    priority?: "low" | "medium" | "high";
+}
+
+export interface ApiEnquiryResponse {
+    success: boolean;
+    message: string;
+    data: ApiEnquiry;
+}
+
+export function createEnquiry(data: EnquiryPayload) {
+    return apiRequest<ApiEnquiryResponse>("/enquiries", {
+        method: "POST",
+        body: data,
+        auth: true,
+    });
+}
+
 /* -------------------------------------------------------------------------- */
 /*                              REQUIREMENTS API                              */
 /* -------------------------------------------------------------------------- */
@@ -221,4 +244,12 @@ export function fetchRecentlyViewed(params: { limit?: number } = {}) {
             auth: true,
         }
     );
+}
+
+export function recordProductView(productId: number) {
+    return apiRequest<{ success: boolean }>("/recently-viewed", {
+        method: "POST",
+        body: { product_id: productId },
+        auth: true,
+    });
 }

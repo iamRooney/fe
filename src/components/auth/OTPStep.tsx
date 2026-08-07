@@ -12,14 +12,19 @@ import { setAuthSession, setPendingRole, StoredUser } from "@/lib/auth";
 interface Props {
     mode: "login" | "register";
     phone: string;
+    // Only meaningful when mode === "login" — see PhoneStep.
+    loginMethod?: "phone" | "email";
+    email?: string;
     role?: UserRole | null;
     onBack: () => void;
 }
 
 const OTP_LENGTH = 4;
 
-export default function OTPStep({ mode, phone, role, onBack }: Props) {
+export default function OTPStep({ mode, phone, loginMethod = "phone", email = "", role, onBack }: Props) {
     const router = useRouter();
+    const usingEmail = mode === "login" && loginMethod === "email";
+    const identifierBody = usingEmail ? { email } : { phone };
 
     const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(""));
     const [timer, setTimer] = useState(30);
@@ -47,7 +52,7 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
                 data: { user: StoredUser; token: string };
             }>("/auth/verify-otp", {
                 method: "POST",
-                body: { phone, otp: otp.join("") },
+                body: { ...identifierBody, otp: otp.join("") },
             });
 
             const { user, token } = res.data;
@@ -83,7 +88,7 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
         try {
             await apiRequest("/auth/send-otp", {
                 method: "POST",
-                body: { phone, mode },
+                body: { ...identifierBody, mode },
             });
             setTimer(30);
             setOtp(Array(OTP_LENGTH).fill(""));
@@ -112,7 +117,9 @@ export default function OTPStep({ mode, phone, role, onBack }: Props) {
                 Enter the verification code sent to
             </p>
 
-            <p className="mt-1 text-center font-semibold text-slate-700">+91 {phone}</p>
+            <p className="mt-1 text-center font-semibold text-slate-700">
+                {usingEmail ? email : `+91 ${phone}`}
+            </p>
 
             <p className="mb-8 mt-2 text-center text-sm text-blue-600">
                 {mode === "register"
